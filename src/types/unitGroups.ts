@@ -6,3 +6,5 @@ export enum UnitGroup {
   HorseArcher = 'HorseArcher',
   General = 'General',
 }
+
+export const unitGroups = Object.values(UnitGroup);

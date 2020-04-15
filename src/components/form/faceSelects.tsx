@@ -3,6 +3,7 @@ import { Form, FormSelectProps } from 'semantic-ui-react';
 import { BeardLabels, HairLabels } from '../../strings';
 import { Beard, HairFemale, HairMale } from '../../types/face';
 import { FaceTemplate } from '../../types/faceTemplates';
+import { splitOnUppercase } from '../../utils/stringUtils';
 
 type FaceTemplateSelectProps = Omit<FormSelectProps, 'options'>;
 type BeardSelectProps = Omit<FormSelectProps, 'options'>;
@@ -13,7 +14,7 @@ interface HairSelectProps extends Omit<FormSelectProps, 'options'> {
 
 const faceTemplates = Object.entries(FaceTemplate).map(([key, template]) => ({
   key: template,
-  text: key.split(/(?=[A-Z])/).join(' '),
+  text: splitOnUppercase(key).join(' '),
   value: template,
 }));
 

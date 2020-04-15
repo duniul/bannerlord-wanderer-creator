@@ -17,6 +17,7 @@ import NameInput from './form/NameInput';
 import SexRadioGroup from './form/SexRadioGroup';
 import SkillInputs from './form/SkillInputs';
 import TraitSelects from './form/TraitSelects';
+import UnitGroupSelect from './form/UnitGroupSelect';
 import VoiceRadioGroup from './form/VoiceRadioGroup';
 import TransitionableModal from './TransitionableModal';
 import WandererDialogue from './WandererDialogue';
@@ -154,6 +155,7 @@ const WandererModal = ({ wanderer, onUpdate, onClose, ...modalProps }: WandererM
           <NameInput value={formValues.name} error={errors?.name} onChange={handleValueChange} />
 
           <CultureSelect value={formValues.culture} onChange={handleValueChange} />
+          <UnitGroupSelect value={formValues.defaultGroup} onChange={handleValueChange} />
           <SexRadioGroup isFemale={formValues.isFemale!} onChange={handleValueChange} />
           <VoiceRadioGroup value={formValues.voice!} onChange={handleValueChange} />
 
