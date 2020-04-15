@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import { Icon, Menu } from 'semantic-ui-react';
 import styled, { createGlobalStyle } from 'styled-components';
 import FaqPage from './components/FaqPage';
@@ -40,7 +40,8 @@ const AppHeader = styled.header`
 
 const PATHS = {
   ROOT: '/',
-  FAQ: '/faq',
+  WANDERERS: '/wanderers',
+  FAQ: '/wanderers/faq',
 };
 
 const App = () => {
@@ -52,7 +53,7 @@ const App = () => {
           <AppHeader>
             <h1>Bannerlord Wanderer Creator</h1>
             <Menu text>
-              <MenuRouterItem name="Wanderers" to={PATHS.ROOT} />
+              <MenuRouterItem name="Wanderers" to={PATHS.WANDERERS} />
               <MenuRouterItem name="FAQ" to={PATHS.FAQ} />
               <Menu.Item href="https://github.com/duniul/butterlord-tools" target="_blank" rel="noopener noreferrer">
                 <Icon name="github" />
@@ -64,9 +65,10 @@ const App = () => {
             <Route exact path={PATHS.FAQ}>
               <FaqPage />
             </Route>
-            <Route>
+            <Route path={PATHS.WANDERERS}>
               <WandererPage />
             </Route>
+            <Redirect to={PATHS.WANDERERS} />
           </Switch>
         </ModOptionsProvider>
       </BrowserRouter>
