@@ -21,6 +21,7 @@ import UnitGroupSelect from './form/UnitGroupSelect';
 import VoiceRadioGroup from './form/VoiceRadioGroup';
 import TransitionableModal from './TransitionableModal';
 import WandererDialogue from './WandererDialogue';
+import { UnitGroup } from '../types/unitGroups';
 
 interface WandererModalProps extends Pick<ModalProps, Exclude<keyof ModalProps, 'onClose'>> {
   wanderer?: Wanderer;
@@ -49,6 +50,7 @@ interface FormValues extends Partial<Wanderer> {
 function wandererToFormValues(wanderer?: Wanderer): FormValues {
   const defaultFormValues: FormValues = {
     culture: cultures[0],
+    defaultGroup: UnitGroup.Infantry,
     isFemale: false,
     voice: voices[0],
     face: {},
