@@ -1,0 +1,43 @@
+export enum FaceTemplate {
+  VillagerAserai = 'villager_aserai',
+  VillagerBattania = 'villager_battania',
+  VillagerEmpire = 'villager_empire',
+  VillagerKhuzait = 'villager_khuzait',
+  VillagerSturgia = 'villager_sturgia',
+  VillagerVlandia = 'villager_vlandia',
+
+  VillageWomanAserai = 'village_woman_aserai',
+  VillageWomanBattania = 'village_woman_battania',
+  VillageWomanEmpire = 'village_woman_empire',
+  VillageWomanKhuzait = 'village_woman_khuzait',
+  VillageWomanSturgia = 'village_woman_sturgia',
+  VillageWomanVlandia = 'village_woman_vlandia',
+
+  TownsmanAserai = 'townsman_aserai',
+  TownsmanBattania = 'townsman_battania',
+  TownsmanEmpire = 'townsman_empire',
+  TownsmanKhuzait = 'townsman_khuzait',
+  TownsmanSturgia = 'townsman_sturgia',
+  TownsmanVlandia = 'townsman_vlandia',
+
+  TownswomanAserai = 'townswoman_aserai',
+  TownswomanBattania = 'townswoman_battania',
+  TownswomanEmpire = 'townswoman_empire',
+  TownswomanKhuzait = 'townswoman_khuzait',
+  TownswomanSturgia = 'townswoman_sturgia',
+  TownswomanVlandia = 'townswoman_vlandia',
+
+  BeggarAserai = 'beggar_aserai',
+  BeggarBattania = 'beggar_battania',
+  BeggarEmpire = 'beggar_empire',
+  BeggarKhuzait = 'beggar_khuzait',
+  BeggarSturgia = 'beggar_sturgia',
+  BeggarVlandia = 'beggar_vlandia',
+
+  BanditLooter = 'looter',
+  BanditDesert = 'desert_bandits_bandit',
+  BanditForest = 'forest_bandits_bandit',
+  BanditMountain = 'mountain_bandits_bandit',
+  BanditSteppe = 'steppe_bandits_bandit',
+  BanditSeaRaider = 'sea_raiders_bandit',
+}
