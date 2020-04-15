@@ -87,28 +87,28 @@ const WandererDialogue = ({ dialogue, name, culture, isFemale, onChange }: Wande
         {...wandererCommentProps}
         description="Pre backstory"
         inputId="dialogue.prebackstory"
-        value={dialogue.prebackstory}
+        value={dialogue?.prebackstory}
       />
 
       <DialogueComment
         {...wandererCommentProps}
         description="Backstory, part 1"
         inputId="dialogue.backstory_a"
-        value={dialogue.backstory_a}
+        value={dialogue?.backstory_a}
       />
 
       <DialogueComment
         {...wandererCommentProps}
         description="Backstory, part 2"
         inputId="dialogue.backstory_b"
-        value={dialogue.backstory_b}
+        value={dialogue?.backstory_b}
       />
 
       <DialogueComment
         {...wandererCommentProps}
         description="Backstory, part 3"
         inputId="dialogue.backstory_c"
-        value={dialogue.backstory_c}
+        value={dialogue?.backstory_c}
       />
 
       <DialogueComment

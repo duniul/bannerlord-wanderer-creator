@@ -52,7 +52,7 @@ async function loadMod(zippedModFile: File): Promise<WandererModule> {
 
   const wanderers: Wanderer[] = characterXmls.flatMap(parseCharactersXml).map((partialWanderer) => ({
     ...partialWanderer,
-    dialogue: dialogues[partialWanderer.id],
+    dialogue: dialogues[partialWanderer.id] || {},
   }));
 
   const { name, version } = parseSubModuleXml(subModuleXml);
