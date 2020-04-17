@@ -46,7 +46,7 @@ const skippedPatterns = {
     '^horseman$',
     '^horse_archer$',
   ],
-  spCharacterTemplates: ['test', 'troop_civilian', 'creation', 'guard'],
+  spCharacterTemplates: ['test', 'troop_civilian', 'creation', 'guard', 'noncombatant_', 'civillian_template', ],
 };
 
 async function parseEquipmentNpcs(bannerlordPath) {
