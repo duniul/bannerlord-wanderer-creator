@@ -1,7 +1,7 @@
 import convert from 'xml-js';
 import { WandererWithoutDialogue } from '../../types/wanderers';
 import { Culture } from '../../types/culture';
-import { CivilianEquipmentTemplate, EquipmentTemplate } from '../../types/equipment';
+import { CivilianEquipmentTemplate, BattleEquipmentTemplate } from '../../types/equipment';
 import { Beard, Face, Hair } from '../../types/face';
 import { FaceTemplate } from '../../types/faceTemplates';
 import { Skill, Skills } from '../../types/skills';
@@ -96,7 +96,7 @@ function mapWandererXMLToJson(xmlWanderer: WandererXML): WandererWithoutDialogue
     name: name.replace('&quot;', '"'),
     voice: voice as Voice,
     culture: stripXmlScope(culture) as Culture,
-    battleTemplate: stripXmlScope(battleTemplate) as EquipmentTemplate,
+    battleTemplate: stripXmlScope(battleTemplate) as BattleEquipmentTemplate,
     civilianTemplate: stripXmlScope(civilianTemplate) as CivilianEquipmentTemplate,
     isFemale: isFemale === 'true',
     defaultGroup: defaultGroup as UnitGroup,

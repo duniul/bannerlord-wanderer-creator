@@ -1,5 +1,5 @@
 import { Culture } from './culture';
-import { CivilianEquipmentTemplate, EquipmentTemplate } from './equipment';
+import { CivilianEquipmentTemplate, BattleEquipmentTemplate } from './equipment';
 import { Face } from './face';
 import { Skills } from './skills';
 import { Traits } from './traits';
@@ -22,7 +22,7 @@ export interface WandererWithoutDialogue {
   voice: Voice;
   culture: Culture;
   isFemale: boolean;
-  battleTemplate: EquipmentTemplate;
+  battleTemplate: BattleEquipmentTemplate;
   civilianTemplate: CivilianEquipmentTemplate;
   defaultGroup: UnitGroup;
   face: Face;

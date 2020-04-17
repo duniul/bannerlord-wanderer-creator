@@ -1,11 +1,11 @@
 import React from 'react';
 import { Form, FormSelectProps } from 'semantic-ui-react';
 import { EquipmentLabels } from '../../strings';
-import { EquipmentTemplate } from '../../types/equipment';
+import { BattleEquipmentTemplate } from '../../types/equipment';
 
 type BattleTemplateSelectProps = Omit<FormSelectProps, 'options'>;
 
-const battleTemplateOptions = Object.values(EquipmentTemplate).map((template) => ({
+const battleTemplateOptions = Object.values(BattleEquipmentTemplate).map((template) => ({
   key: template,
   text: EquipmentLabels[template],
   value: template,
