@@ -53,14 +53,17 @@ function wandererToFormValues(wanderer?: Wanderer): FormValues {
     defaultGroup: UnitGroup.Infantry,
     isFemale: false,
     voice: voices[0],
-    face: {},
-    skills: {},
-    traits: {},
-    dialogue: {},
     useCustomFace: false,
   };
 
-  const formValues = { ...defaultFormValues, ...(wanderer || {}) };
+  const formValues = {
+    ...defaultFormValues,
+    ...(wanderer || {}),
+    face: { ...(wanderer?.face || {}) },
+    traits: { ...(wanderer?.traits || {}) },
+    skills: { ...(wanderer?.skills || {}) },
+    dialogue: { ...(wanderer?.dialogue || {}) },
+  };
 
   if (!!wanderer?.face.bodyProperties) {
     formValues.useCustomFace = true;
