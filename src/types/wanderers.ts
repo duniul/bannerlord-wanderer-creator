@@ -19,6 +19,7 @@ export interface Dialogue {
 export interface WandererWithoutDialogue {
   id: string;
   name: string;
+  age?: number;
   voice: Voice;
   culture: Culture;
   isFemale: boolean;

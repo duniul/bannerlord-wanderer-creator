@@ -16,7 +16,7 @@ export interface WandererXML {
     civilianTemplate: string;
     default_group: string;
 
-    age?: string | undefined;
+    age?: string | number;
     is_female: 'true' | undefined;
     is_template: 'true';
     is_hero: 'false';

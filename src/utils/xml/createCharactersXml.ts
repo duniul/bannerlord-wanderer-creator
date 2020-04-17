@@ -115,6 +115,7 @@ function mapWandererJsonToXML(wanderer: WandererWithoutDialogue): WandererXML {
   const {
     id,
     name,
+    age,
     voice,
     culture,
     battleTemplate,
@@ -136,6 +137,7 @@ function mapWandererJsonToXML(wanderer: WandererWithoutDialogue): WandererXML {
     attributes: {
       id,
       name: name.replace('"', '&quot;'),
+      age,
       voice,
       is_female: isFemale ? 'true' : undefined,
       culture: 'Culture.' + culture,

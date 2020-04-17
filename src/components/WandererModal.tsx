@@ -1,6 +1,6 @@
 import set from 'lodash.set';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { Button, Form, Header, Modal, ModalProps } from 'semantic-ui-react';
+import { Button, Form, Header, Modal, ModalProps, FormGroup } from 'semantic-ui-react';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
 import { cultures } from '../types/culture';
@@ -51,6 +51,7 @@ function wandererToFormValues(wanderer?: Wanderer): FormValues {
   const defaultFormValues: FormValues = {
     culture: cultures[0],
     defaultGroup: UnitGroup.Infantry,
+    age: 20,
     isFemale: false,
     voice: voices[0],
     useCustomFace: false,
@@ -87,6 +88,10 @@ const WandererModal = ({ wanderer, onUpdate, onClose, ...modalProps }: WandererM
 
     if (!values.name) {
       set(newErrors, 'name', REQUIRED_LABEL);
+    }
+
+    if (values.age && (values.age < 18 || values.age > 100)) {
+      set(newErrors, 'age', 'Age must be between 18 and 100.');
     }
 
     if (!values.battleTemplate) {
@@ -157,7 +162,10 @@ const WandererModal = ({ wanderer, onUpdate, onClose, ...modalProps }: WandererM
       <Modal.Content style={{ padding: 32 }}>
         <StyledForm id={FORM_ID} size="large">
           <Header dividing>Character info</Header>
-          <NameInput value={formValues.name} error={errors?.name} onChange={handleValueChange} />
+          <FormGroup widths="equal">
+            <NameInput value={formValues.name} error={errors?.name} onChange={handleValueChange} />
+            <Form.Input value={formValues.age} error={errors?.age} onChange={handleValueChange} type="number" name="age" label="Age" min={18} max={100} fluid />
+          </FormGroup>
 
           <CultureSelect value={formValues.culture} onChange={handleValueChange} />
           <UnitGroupSelect value={formValues.defaultGroup} onChange={handleValueChange} />
