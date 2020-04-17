@@ -29,7 +29,7 @@ async function createAndDownloadMod(name: string, version: string, wanderers: Wa
 
   return createMod(name, version, wanderers, wandererStringsLoaderDll).then((result) => {
     const { id, zipBlob } = result;
-    saveAs(zipBlob, `${id}.zip`);
+    saveAs(zipBlob, `${id}_${version.replace('.', '_')}.zip`);
 
     return result;
   });
