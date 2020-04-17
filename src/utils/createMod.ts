@@ -4,13 +4,17 @@ import { createCharactersXml } from './xml/createCharactersXml';
 import { createWandererStringsXml } from './xml/createWandererStringsXml';
 import { createSubModuleXml } from './xml/subModuleXml';
 
+function stripNonAlphanumeric(string: string): string {
+  return string.replace(/[^a-zA-Z\d]/g, '');
+}
+
 function updateWandererIds(modId: string, wanderers: Wanderer[]) {
   const ids = new Set();
   const idPrefix = `spc_wanderer_${modId.toLowerCase()}`;
 
   return wanderers.map((wanderer) => {
     const namePart = wanderer.name.toLowerCase().replace(' ', '_');
-    const baseId = `${idPrefix}_${namePart}`;
+    const baseId = stripNonAlphanumeric(`${idPrefix}_${namePart}`);
     let id = baseId;
     let duplicateIncrement = 1;
 
@@ -31,7 +35,7 @@ function createXmlAttrsToIdentifyText(modId: string, charactersFilePath: string,
 }
 
 async function createMod(name: string, version: string, wanderers: Wanderer[], wandererStringsDll: Blob) {
-  const id = `zz${name.replace(/[^a-zA-Z\d]/g, '')}`;
+  const id = stripNonAlphanumeric(`zz${name}`);
   const lowerCaseModId = id.toLowerCase();
   const wanderersWithFixedIds = updateWandererIds(id, wanderers);
 
