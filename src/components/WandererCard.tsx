@@ -77,7 +77,7 @@ function renderTraits(traits?: Traits): JSX.Element[] {
 
 const WandererCard = React.memo<WandererCardProps>(
   ({ wanderer, onUpdate, onDelete }): JSX.Element => {
-    const { id, name, isFemale, culture, skills, traits, battleTemplate, dialogue } = wanderer;
+    const { id, name, age, isFemale, culture, skills, traits, battleTemplate, dialogue } = wanderer;
     const [active, setActive] = useState<boolean>(false);
     const [visiblePopup, setVisiblePopup] = useState<boolean>(false);
     const [visibleModal, setVisibleModal] = useState<boolean>(false);
@@ -103,7 +103,7 @@ const WandererCard = React.memo<WandererCardProps>(
             <Item.Content>
               <Item.Header>{name}</Item.Header>
               <Item.Meta>
-                {isFemale ? 'Female' : 'Male'} {CultureLabels[culture]} ∙ {sumSkillPoints(skills)} skill points
+                {isFemale ? 'Female' : 'Male'}, {age} ∙ {CultureLabels[culture]} ∙ {sumSkillPoints(skills)} skill points
               </Item.Meta>
               <Item.Meta style={{ marginBottom: 0 }}>{EquipmentLabels[battleTemplate]}</Item.Meta>
               <TraitsArea>{traitLabels}</TraitsArea>
