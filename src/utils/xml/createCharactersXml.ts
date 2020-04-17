@@ -135,7 +135,7 @@ function mapWandererJsonToXML(wanderer: WandererWithoutDialogue): WandererXML {
     name: 'NPCCharacter',
     attributes: {
       id,
-      name,
+      name: name.replace('"', '&quot;'),
       voice,
       is_female: isFemale ? 'true' : undefined,
       culture: 'Culture.' + culture,

@@ -93,7 +93,7 @@ function mapWandererXMLToJson(xmlWanderer: WandererXML): WandererWithoutDialogue
 
   return {
     id,
-    name,
+    name: name.replace('&quot;', '"'),
     voice: voice as Voice,
     culture: stripXmlScope(culture) as Culture,
     battleTemplate: stripXmlScope(battleTemplate) as EquipmentTemplate,
