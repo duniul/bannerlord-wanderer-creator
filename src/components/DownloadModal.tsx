@@ -127,6 +127,9 @@ const DownloadModal = ({ onChangeModName, onChangeModVersion, onClose, ...modalP
             Installation
           </Header>
           <p>
+            Requires a new game!
+            </p>
+          <p>
             Either install the mod using{' '}
             <a href="https://www.nexusmods.com/about/vortex/" target="_blank" rel="noopener noreferrer">
               Vortex
