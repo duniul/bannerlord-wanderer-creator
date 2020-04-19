@@ -92,7 +92,6 @@ const WandererModal = ({ wanderer, onUpdate, onClose, ...modalProps }: WandererM
   formValuesRef.current = formValues;
 
   const handleClose = useCallback(() => {
-    console.log(formValuesRef.current, initialFormValuesRef.current)
     if (!isEqual(formValuesRef.current, initialFormValuesRef.current)) {
       openCloseConfirm();
     } else {
@@ -129,7 +128,7 @@ const WandererModal = ({ wanderer, onUpdate, onClose, ...modalProps }: WandererM
         try {
           bodyProperties = mapBodyPropertiesXmlToJson(values.bodyPropertiesString);
         } catch (e) {
-          set(newErrors, 'bodyPropertiesString', 'Invalid BodyProperies XML.');
+          set(newErrors, 'bodyPropertiesString', 'Invalid BodyProperies XML (must be a BodyProperties element with a version and key, e.g. <BodyProperties version="x" key="x" />)');
         }
       }
     } else {
