@@ -5,6 +5,7 @@ import { useModOptions } from '../contexts/ModOptionsContext';
 import { WandererModule } from '../types/wanderers';
 import loadMod from '../utils/loadMod';
 import FileInput from './form/FileInput';
+import { captureException } from '@sentry/browser';
 
 interface UploadModalProps extends Pick<ModalProps, Exclude<keyof ModalProps, 'onClose'>> {
   onClose: any;
@@ -18,7 +19,7 @@ const FileInputWrapper = styled.div`
 const UploadModal = ({ onClose, ...modalProps }: UploadModalProps) => {
   const { setModName, setModVersion, setWanderers } = useModOptions();
   const [loading, setLoading] = useState<boolean>();
-  const [uploadError, setUploadError] = useState<string>();
+  const [uploadErrorId, setUploadErrorId] = useState<string>();
   const [uploadedFile, setUploadedFile] = useState<File>();
   const [parsedMod, setParsedMod] = useState<WandererModule>();
 
@@ -33,17 +34,13 @@ const UploadModal = ({ onClose, ...modalProps }: UploadModalProps) => {
       loadMod(file)
         .then((parsed) => {
           setLoading(false);
-
-          if (parsed?.wanderers.length > 0) {
-            setUploadError(undefined);
-            setParsedMod(parsed);
-          } else {
-            setUploadError('The zip file does not contain any wanderers.');
-          }
+          setUploadErrorId(undefined);
+          setParsedMod(parsed || {});
         })
-        .catch(() => {
+        .catch((error) => {
+          const eventId = captureException(error);
           setLoading(false);
-          setUploadError('Sorry, the mod could not be loaded.');
+          setUploadErrorId(eventId);
         });
     }
   }, []);
@@ -63,28 +60,36 @@ const UploadModal = ({ onClose, ...modalProps }: UploadModalProps) => {
       <Modal.Header>Load mod</Modal.Header>
       <Modal.Content>
         <FileInputWrapper>
-          <FileInput fluid size="large" onChange={handleUploadFile} negative={!!uploadError} accept=".zip">
+          <FileInput fluid size="large" onChange={handleUploadFile} negative={!!uploadErrorId} accept=".zip">
             {uploadedFile?.name || 'Select file to load'}
           </FileInput>
         </FileInputWrapper>
 
-        {uploadError && (
+        {uploadErrorId && (
           <Message negative>
-            <Message.Header>{uploadError}</Message.Header>
+            <Message.Header>Sorry, the mod could not be loaded.</Message.Header>
+            <Message.Content>
+              <br />
+              Error ID: <b>{uploadErrorId}</b>
+              <br />
+              <br />
+              You can check the error log for potential causes, or ask for help on Github or NexusMods. When asking for
+              help, please include the error ID above.
+            </Message.Content>
           </Message>
         )}
 
-        {!uploadError && parsedMod && (
+        {!uploadErrorId && parsedMod && (
           <>
             <Header as="h3" variant="medium">
               ZIP content
             </Header>
             <p>
-              Mod name: {parsedMod.name}
+              Mod name: {parsedMod?.name}
               <br />
-              Mod version: {parsedMod.version}
+              Mod version: {parsedMod?.version}
               <br />
-              Number of wanderers: {parsedMod.wanderers.length}
+              Number of wanderers: {parsedMod?.wanderers?.length || 0}
             </p>
           </>
         )}
@@ -99,7 +104,7 @@ const UploadModal = ({ onClose, ...modalProps }: UploadModalProps) => {
       </Modal.Content>
       <Modal.Actions>
         <Button onClick={onClose}>Cancel</Button>
-        <Button primary negative={!!uploadError} onClick={handleLoadMod} loading={loading} disabled={!parsedMod}>
+        <Button primary negative={!!uploadErrorId} onClick={handleLoadMod} loading={loading} disabled={!parsedMod}>
           Load wanderers
         </Button>
       </Modal.Actions>

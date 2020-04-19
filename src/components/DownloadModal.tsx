@@ -6,6 +6,7 @@ import { Button, Form, Header, Message, Modal, ModalProps } from 'semantic-ui-re
 import { useModOptions } from '../contexts/ModOptionsContext';
 import { Wanderer } from '../types/wanderers';
 import createMod from '../utils/createMod';
+import { captureException } from '@sentry/browser';
 
 interface DownloadModalProps extends Pick<ModalProps, Exclude<keyof ModalProps, 'onClose'>> {
   onClose: any;
@@ -37,9 +38,9 @@ async function createAndDownloadMod(name: string, version: string, wanderers: Wa
 const DownloadModal = ({ onChangeModName, onChangeModVersion, onClose, ...modalProps }: DownloadModalProps) => {
   const { wanderers, modName, modVersion, setModName, setModVersion } = useModOptions();
   const [loading, setLoading] = useState<boolean>();
-  const [modError, setModError] = useState<string>();
+  const [modErrorId, setModErrorId] = useState<string>();
   const [formErrors, setFormErrors] = useState<FormErrors>({});
-  const hasErrors = useMemo(() => !!modError || Object.values(formErrors).some((e) => !!e), [modError, formErrors]);
+  const hasErrors = useMemo(() => !!modErrorId || Object.values(formErrors).some((e) => !!e), [modErrorId, formErrors]);
 
   const handleModNameChange = useCallback(
     (event, data) => {
@@ -79,12 +80,13 @@ const DownloadModal = ({ onChangeModName, onChangeModVersion, onClose, ...modalP
       createAndDownloadMod(modName, modVersion, wanderers)
         .then(() => {
           setLoading(false);
-          setModError(undefined);
+          setModErrorId(undefined);
           onClose();
         })
-        .catch(() => {
+        .catch((error) => {
+          const eventId = captureException(error);
           setLoading(false);
-          setModError('Sorry, the mod could not be created.');
+          setModErrorId(eventId);
         });
     } else {
       setFormErrors(newErrors);
@@ -116,18 +118,24 @@ const DownloadModal = ({ onChangeModName, onChangeModVersion, onClose, ...modalP
             error={formErrors.modVersion && { content: formErrors.modVersion, pointing: 'above' }}
           />
 
-          {modError && (
+          {modErrorId && (
             <Message negative>
-              <Message.Header>{modError}</Message.Header>
+              <Message.Header>Sorry, the mod could not be created.</Message.Header>
+              <Message.Content>
+                <br />
+                Error ID: <b>{modErrorId}</b>
+                <br />
+                <br />
+                You can check the error log for potential causes, or ask for help on Github or NexusMods. When asking
+                for help, please include the error ID above.
+              </Message.Content>
             </Message>
           )}
 
           <Header as="h3" size="medium">
             Installation
           </Header>
-          <p>
-            Requires a new game!
-            </p>
+          <p>Requires a new game!</p>
           <p>
             Either install the mod using{' '}
             <a href="https://www.nexusmods.com/about/vortex/" target="_blank" rel="noopener noreferrer">
