@@ -21,7 +21,7 @@ function parseStringId(stringId: string) {
 
 export function parseWandererStringsXml(xml: string): DialoguesByCharacterId {
   const jsonifiedXml = convert.xml2js(xml);
-  const stringElements = jsonifiedXml?.elements?.[0]?.elements?.[0]?.elements;
+  const stringElements = jsonifiedXml?.elements?.[0]?.elements?.[0]?.elements || [];
 
   const dialoguesByCharacterId = stringElements.reduce((acc: { [K: string]: string }, el: Element) => {
     const { id, text } = el.attributes || {};
