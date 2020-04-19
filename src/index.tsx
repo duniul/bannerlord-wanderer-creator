@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import 'array-flat-polyfill';
 import 'semantic-ui-css/semantic.min.css';
 import{ init as initSentry } from '@sentry/browser';
 import * as serviceWorker from './serviceWorker';

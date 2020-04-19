@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@sentry/browser": "^5.15.4",
+    "array-flat-polyfill": "^1.0.1",
     "file-saver": "^2.0.2",
     "jszip": "^3.3.0",
     "lodash.isequal": "^4.5.0",
