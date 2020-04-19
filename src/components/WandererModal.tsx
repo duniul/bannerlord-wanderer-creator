@@ -1,6 +1,7 @@
 import set from 'lodash.set';
+import isEqual from 'lodash.isequal';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { Button, Form, Header, Modal, ModalProps, FormGroup } from 'semantic-ui-react';
+import { Button, Form, Header, Modal, ModalProps, FormGroup, Confirm } from 'semantic-ui-react';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
 import { cultures } from '../types/culture';
@@ -19,9 +20,9 @@ import SkillInputs from './form/SkillInputs';
 import TraitSelects from './form/TraitSelects';
 import UnitGroupSelect from './form/UnitGroupSelect';
 import VoiceRadioGroup from './form/VoiceRadioGroup';
-import TransitionableModal from './TransitionableModal';
 import WandererDialogue from './WandererDialogue';
 import { UnitGroup } from '../types/unitGroups';
+import useBooleanSetters from '../hooks/useBooleanSetters';
 
 interface WandererModalProps extends Pick<ModalProps, Exclude<keyof ModalProps, 'onClose'>> {
   wanderer?: Wanderer;
@@ -39,6 +40,11 @@ const StyledForm = styled(Form)`
   }
 `;
 
+const CenteredConfirm = styled(Confirm)`
+  top: 50%;
+  transform: translateY(-50%);
+`;
+
 const FORM_ID = 'wanderer-form';
 const REQUIRED_LABEL = 'Required';
 
@@ -49,6 +55,7 @@ interface FormValues extends Partial<Wanderer> {
 
 function wandererToFormValues(wanderer?: Wanderer): FormValues {
   const defaultFormValues: FormValues = {
+    name: '',
     culture: cultures[0],
     defaultGroup: UnitGroup.Infantry,
     age: 20,
@@ -75,12 +82,23 @@ function wandererToFormValues(wanderer?: Wanderer): FormValues {
 }
 
 const WandererModal = ({ wanderer, onUpdate, onClose, ...modalProps }: WandererModalProps) => {
-  const [formValues, setFormValues] = useState<FormValues>(wandererToFormValues(wanderer));
-
+  const initialFormValuesRef = useRef(wandererToFormValues(wanderer));
+  const [formValues, setFormValues] = useState<FormValues>(initialFormValuesRef.current);
+  const [showCloseConfirm, setShowUnsavedModal] = useState<boolean>(false);
+  const [openCloseConfirm, closeCloseConfirm] = useBooleanSetters(setShowUnsavedModal);
   const [errors, setErrors] = useState<FormErrors>({});
   const hasErrors = useMemo(() => Object.values(errors).some((e) => typeof e === 'string'), [errors]);
   const formValuesRef = useRef(formValues);
   formValuesRef.current = formValues;
+
+  const handleClose = useCallback(() => {
+    console.log(formValuesRef.current, initialFormValuesRef.current)
+    if (!isEqual(formValuesRef.current, initialFormValuesRef.current)) {
+      openCloseConfirm();
+    } else {
+      onClose();
+    }
+  }, [openCloseConfirm, onClose]);
 
   const handleSubmit = useCallback(() => {
     const { useCustomFace, ...values } = formValuesRef.current;
@@ -137,9 +155,7 @@ const WandererModal = ({ wanderer, onUpdate, onClose, ...modalProps }: WandererM
             },
       } as any);
 
-      if (onClose) {
-        onClose();
-      }
+      onClose();
     } else {
       setErrors(newErrors);
     }
@@ -157,14 +173,24 @@ const WandererModal = ({ wanderer, onUpdate, onClose, ...modalProps }: WandererM
   }, []);
 
   return (
-    <TransitionableModal dimmer="inverted" onClose={onClose} {...modalProps}>
+    <Modal dimmer="inverted" onClose={handleClose} {...modalProps}>
       <Modal.Header>{wanderer ? 'Edit' : 'Create new'} wanderer</Modal.Header>
       <Modal.Content style={{ padding: 32 }}>
         <StyledForm id={FORM_ID} size="large">
           <Header dividing>Character info</Header>
           <FormGroup widths="equal">
             <NameInput value={formValues.name} error={errors?.name} onChange={handleValueChange} />
-            <Form.Input value={formValues.age} error={errors?.age} onChange={handleValueChange} type="number" name="age" label="Age" min={18} max={100} fluid />
+            <Form.Input
+              value={formValues.age}
+              error={errors?.age}
+              onChange={handleValueChange}
+              type="number"
+              name="age"
+              label="Age"
+              min={18}
+              max={100}
+              fluid
+            />
           </FormGroup>
 
           <CultureSelect value={formValues.culture} onChange={handleValueChange} />
@@ -252,12 +278,25 @@ const WandererModal = ({ wanderer, onUpdate, onClose, ...modalProps }: WandererM
         </StyledForm>
       </Modal.Content>
       <Modal.Actions>
-        <Button onClick={onClose as any}>Cancel</Button>
+        <Button onClick={handleClose}>Cancel</Button>
         <Button type="submit" onClick={handleSubmit} primary negative={hasErrors}>
           Save wanderer
         </Button>
       </Modal.Actions>
-    </TransitionableModal>
+
+      {showCloseConfirm && (
+        <CenteredConfirm
+          open={showCloseConfirm}
+          size="tiny"
+          header="Unsaved changes"
+          content="You have unsaved changes, are you sure you want to close?"
+          closeOnDocumentClick={false}
+          closeOnDimmerClick={false}
+          onCancel={closeCloseConfirm}
+          onConfirm={onClose}
+        />
+      )}
+    </Modal>
   );
 };
 

@@ -6,7 +6,6 @@ import { Button, Form, Header, Message, Modal, ModalProps } from 'semantic-ui-re
 import { useModOptions } from '../contexts/ModOptionsContext';
 import { Wanderer } from '../types/wanderers';
 import createMod from '../utils/createMod';
-import TransitionableModal from './TransitionableModal';
 
 interface DownloadModalProps extends Pick<ModalProps, Exclude<keyof ModalProps, 'onClose'>> {
   onClose: any;
@@ -93,7 +92,7 @@ const DownloadModal = ({ onChangeModName, onChangeModVersion, onClose, ...modalP
   }, [modName, modVersion, onClose, wanderers]);
 
   return (
-    <TransitionableModal dimmer="inverted" onClose={onClose} size="tiny" {...modalProps}>
+    <Modal dimmer="inverted" onClose={onClose} size="tiny" {...modalProps}>
       <Modal.Header>Download module</Modal.Header>
       <Modal.Content>
         <Form>
@@ -162,7 +161,7 @@ const DownloadModal = ({ onChangeModName, onChangeModVersion, onClose, ...modalP
           Download
         </Button>
       </Modal.Actions>
-    </TransitionableModal>
+    </Modal>
   );
 };
 

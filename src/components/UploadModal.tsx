@@ -5,7 +5,6 @@ import { useModOptions } from '../contexts/ModOptionsContext';
 import { WandererModule } from '../types/wanderers';
 import loadMod from '../utils/loadMod';
 import FileInput from './form/FileInput';
-import TransitionableModal from './TransitionableModal';
 
 interface UploadModalProps extends Pick<ModalProps, Exclude<keyof ModalProps, 'onClose'>> {
   onClose: any;
@@ -60,7 +59,7 @@ const UploadModal = ({ onClose, ...modalProps }: UploadModalProps) => {
   }, [onClose, parsedMod, setModName, setModVersion, setWanderers]);
 
   return (
-    <TransitionableModal dimmer="inverted" size="tiny" onClose={onClose} {...modalProps}>
+    <Modal dimmer="inverted" size="tiny" onClose={onClose} {...modalProps}>
       <Modal.Header>Load mod</Modal.Header>
       <Modal.Content>
         <FileInputWrapper>
@@ -104,7 +103,7 @@ const UploadModal = ({ onClose, ...modalProps }: UploadModalProps) => {
           Load wanderers
         </Button>
       </Modal.Actions>
-    </TransitionableModal>
+    </Modal>
   );
 };
 
