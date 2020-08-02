@@ -15,8 +15,8 @@ async function unzipModXmls(zippedModFile: File) {
   const zip = new JSZip();
   const unzipped = await zip.loadAsync(zippedModFile);
 
-  async function getTextContent(filePath: string) {
-    return unzipped.file(filePath).async('text');
+  async function getTextContent(filePath: string): Promise<string> {
+    return unzipped.file(filePath)?.async('text') || '';
   }
 
   let characterPaths: string[] = [];
