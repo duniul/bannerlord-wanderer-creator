@@ -5,6 +5,7 @@
     "arrow-parens": [2, "always"],
     "import/prefer-default-export": "off",
     "react/jsx-filename-extension": "off",
-    "implicit-arrow-linebreak": "off"
+    "implicit-arrow-linebreak": "off",
+    "@typescript-eslint/no-redeclare": "off"
   }
 }
