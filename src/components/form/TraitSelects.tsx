@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { Form, StrictFormSelectProps } from 'semantic-ui-react';
-import { TraitLabels, TraitVariantLabels } from '../../strings';
-import { Trait, Traits, traits, TraitVariant, traitVariants } from '../../types/traits';
+import { TraitLabels, TRAIT_LEVEL_LABELS } from '../../strings';
+import { Trait, TraitLevel, Traits, TRAITS, TRAIT_LEVELS } from '../../types/traits';
 
 interface TraitSelectsProps {
   traits?: Traits;
@@ -10,18 +10,18 @@ interface TraitSelectsProps {
 
 interface TraitSelectProps {
   id: Trait;
-  value?: TraitVariant;
+  value?: TraitLevel;
   onChange: StrictFormSelectProps['onChange'];
 }
 
 interface TraitOptionProps {
   id: Trait;
-  value?: TraitVariant;
+  value?: TraitLevel;
 }
 
 const TraitOption = ({ id, value }: TraitOptionProps) => {
   const number = Number(value);
-  const label = value && (TraitVariantLabels[id] as any)?.[value];
+  const label = value && TRAIT_LEVEL_LABELS[id]?.[value];
   let color = undefined;
 
   if (number > 0) {
@@ -42,7 +42,7 @@ const TraitOption = ({ id, value }: TraitOptionProps) => {
 const TraitSelect = React.memo(({ id, value, onChange }: TraitSelectProps) => {
   const traitOptions = useMemo(
     () =>
-      traitVariants.map((value) => ({
+      TRAIT_LEVELS.map((value) => ({
         key: value,
         value,
         text: <TraitOption id={id} value={value} />,
@@ -53,11 +53,12 @@ const TraitSelect = React.memo(({ id, value, onChange }: TraitSelectProps) => {
   return (
     <Form.Select
       name={`traits[${id}]`}
-      placeholder="Select value"
+      placeholder="Default"
       label={TraitLabels[id]}
       options={traitOptions}
       value={value}
       onChange={onChange}
+      clearable
       selection
       fluid
     />
@@ -67,7 +68,7 @@ const TraitSelect = React.memo(({ id, value, onChange }: TraitSelectProps) => {
 const TraitSelects = ({ traits: traitValues, onChange }: TraitSelectsProps) => {
   return (
     <>
-      {traits.map((id: Trait) => (
+      {TRAITS.map((id: Trait) => (
         <TraitSelect key={id} id={id} value={traitValues?.[id]} onChange={onChange} />
       ))}
     </>

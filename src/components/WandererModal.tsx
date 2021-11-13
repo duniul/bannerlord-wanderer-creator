@@ -5,10 +5,9 @@ import { Button, Form, Header, Modal, ModalProps, FormGroup, Confirm } from 'sem
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
 import { cultures } from '../types/culture';
-import { MaleFace } from '../types/face';
 import { voices } from '../types/voices';
 import { Wanderer } from '../types/wanderers';
-import { mapBodyPropertiesJsonToXml, mapBodyPropertiesXmlToJson } from '../utils/bodyProperties';
+import { bodyPropertiesJsToXml, bodyPropertiesXmlToJs } from '../utils/bodyProperties';
 import BattleTemplateSelect from './form/BattleTemplateSelect';
 import CivilianTemplateSelect from './form/CivilianTemplateSelect';
 import CultureSelect from './form/CultureSelect';
@@ -75,7 +74,7 @@ function wandererToFormValues(wanderer?: Wanderer): FormValues {
 
   if (!!wanderer?.face.bodyProperties) {
     formValues.useCustomFace = true;
-    formValues.bodyPropertiesString = mapBodyPropertiesJsonToXml(wanderer.face.bodyProperties);
+    formValues.bodyPropertiesString = bodyPropertiesJsToXml(wanderer.face.bodyProperties);
   }
 
   return formValues;
@@ -126,7 +125,7 @@ const WandererModal = ({ wanderer, onUpdate, onClose, ...modalProps }: WandererM
         set(newErrors, 'bodyPropertiesString', REQUIRED_LABEL);
       } else {
         try {
-          bodyProperties = mapBodyPropertiesXmlToJson(values.bodyPropertiesString);
+          bodyProperties = bodyPropertiesXmlToJs(values.bodyPropertiesString);
         } catch (e) {
           set(newErrors, 'bodyPropertiesString', 'Invalid BodyProperies XML (must be a BodyProperties element with a version and key, e.g. <BodyProperties version="x" key="x" />)');
         }
@@ -150,7 +149,7 @@ const WandererModal = ({ wanderer, onUpdate, onClose, ...modalProps }: WandererM
           : {
               template: values.face?.template,
               hair: values.face?.hair,
-              beard: values.isFemale ? undefined : (values.face as MaleFace)?.beard,
+              beard: values.isFemale ? undefined : values.face?.beard,
             },
       } as any);
 
@@ -232,7 +231,7 @@ const WandererModal = ({ wanderer, onUpdate, onClose, ...modalProps }: WandererM
               <HairSelect isFemale={!!formValues.isFemale} onChange={handleValueChange} value={formValues.face?.hair} />
 
               {!formValues.isFemale && (
-                <BeardSelect value={(formValues.face as MaleFace)?.beard} onChange={handleValueChange} />
+                <BeardSelect value={formValues.face?.beard} onChange={handleValueChange} />
               )}
             </FormGrid>
           ) : (

@@ -1,14 +1,11 @@
-import convert, { Element } from 'xml-js';
+import { parseXmlToJs } from './xmlParser';
 
 export function parseSubModuleXml(xml: string) {
-  const jsonifiedXml = convert.xml2js(xml);
-
-  const nameElement = jsonifiedXml?.elements?.[0]?.elements?.find((el: Element) => el.name === 'Name');
-  const versionElement = jsonifiedXml?.elements?.[0]?.elements?.find((el: Element) => el.name === 'Version');
+  const jsXml = parseXmlToJs(xml);
 
   return {
-    name: nameElement?.attributes.value,
-    version: versionElement?.attributes?.value?.replace('v', ''),
+    name: jsXml.Module?.Name?._attrs.value,
+    version: jsXml.Module?.Version?._attrs.value.replace('v', ''),
   };
 }
 

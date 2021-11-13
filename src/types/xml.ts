@@ -1,13 +1,20 @@
 import { BodyProperties } from './face';
 
-/*
- *  COMPANION
- */
+// These types represent objects equivalent to Bannerlord's XML tags.
+// The tag and attribute names should not be changed.
 
-export interface WandererXML {
-  type: 'element';
-  name: 'NPCCharacter';
-  attributes: {
+//
+// CHARACTERS
+//
+
+export interface XmlNpcCharactersFile {
+  NPCCharacters: {
+    NPCCharacter: XmlNpcCharacter | XmlNpcCharacter[];
+  } 
+}
+
+export interface XmlNpcCharacter {
+  _attrs: {
     id: string;
     name: string;
     voice: string;
@@ -15,102 +22,111 @@ export interface WandererXML {
     battleTemplate: string;
     civilianTemplate: string;
     default_group: string;
-
-    age?: string | number;
-    is_female: 'true' | undefined;
-    is_template: 'true';
-    is_hero: 'false';
+    age: number;
+    is_female: true | undefined;
+    is_template: true;
+    is_hero: false;
     occupation: 'Wanderer';
-  };
-  elements: Array<FaceXML | SkillsXML | TraitsXML>;
+  },
+  face: XmlFace;
+  skills: XmlSkills;
+  traits: XmlTraits;
 }
 
-/*
- *  FACE
- */
+//
+// FACE
+//
 
-export interface FaceXML {
-  type: 'element';
-  name: 'face';
-  elements: Array<FaceTemplateXML | HairXML | BeardXML | BodyPropertiesXML>;
+export type XmlFace = XmlFaceWithTemplate | XmlFaceWithBodyProperties;
+
+export interface XmlFaceWithTemplate {
+  face_key_template: XmlFaceKeyTemplate;
+  hair_tags?: XmlHairTags;
+  beard_tags?: XmlBeardTags;
 }
 
-export interface FaceTemplateXML {
-  type: 'element';
-  name: 'face_key_template';
-  attributes: {
+export interface XmlFaceWithBodyProperties {
+  BodyProperties: XmlBodyProperties;
+  BodyPropertiesMax?: XmlBodyProperties;
+}
+
+export function isXmlFaceWithBodyProperties(xmlFace: XmlFace): xmlFace is XmlFaceWithBodyProperties {
+  return !!(xmlFace as any).BodyProperties;
+}
+
+export interface XmlFaceKeyTemplate {
+  _attrs: {
     value: string;
   };
 }
 
-export interface HairXML {
-  type: 'element';
-  name: 'hair_tags';
-  elements: [
-    {
-      type: 'element';
-      name: 'hair_tag';
-      attributes: {
-        name: string;
-      };
-    }
-  ];
+export interface XmlHairTags {
+  hair_tag: XmlHairTag | XmlHairTag[];
 }
 
-export interface BeardXML {
-  type: 'element';
-  name: 'beard_tags';
-  elements: [
-    {
-      type: 'element';
-      name: 'beard_tag';
-      attributes: {
-        name: string;
-      };
-    }
-  ];
+export interface XmlHairTag {
+  _attrs: {
+    name: string;
+  }
 }
 
-export interface BodyPropertiesXML {
-  type: 'element';
-  name: 'BodyProperties' | 'BodyPropertiesMax';
-  attributes: BodyProperties;
+export interface XmlBeardTags {
+  beard_tag: XmlBeardTag | XmlBeardTag[];
 }
 
-/*
- *  TRAITS
- */
+export interface XmlBeardTag {
+  _attrs: {
+    name: string;
+  }
+}
 
-export interface TraitXML {
-  type: 'element';
-  name: 'Trait';
-  attributes: {
+export interface XmlBodyProperties {
+  _attrs: BodyProperties;
+}
+
+//
+// SKILLS & TRAITS
+//
+
+export interface XmlSkills {
+  skill: XmlSkill | XmlSkill[];
+}
+
+export type XmlSkill = XmlIdValueTag;
+
+export interface XmlTraits {
+  Trait: XmlTrait | XmlTrait[];
+}
+
+export type XmlTrait = XmlIdValueTag;
+
+export interface XmlIdValueTag {
+  _attrs: {
     id: string;
-    value: string;
+    value: number;
   };
 }
 
-export interface TraitsXML {
-  type: 'element';
-  name: 'Traits';
-  elements: Array<TraitXML>;
+//
+// DIALOGUE
+//
+
+export interface XmlWandererStringsFile {
+  base: {
+    _attrs: {
+      "xmlns:xsi": string;
+      "xmlns:xsd": string;
+      type: string;
+    },
+    strings: {
+      string: XmlWandererString[];
+    }
+  }
 }
 
-/*
- *  SKILLS
- */
-
-export interface SkillXML {
-  type: 'element';
-  name: 'skill';
-  attributes: {
+export interface XmlWandererString {
+  _attrs: {
     id: string;
-    value: string;
-  };
-}
-
-export interface SkillsXML {
-  type: 'element';
-  name: 'skills';
-  elements: Array<SkillXML>;
+    text: string;
+  }
 }

@@ -27,6 +27,7 @@
   "dependencies": {
     "@sentry/browser": "6.14.3",
     "array-flat-polyfill": "1.0.1",
+    "fast-xml-parser": "3.21.1",
     "file-saver": "2.0.5",
     "jszip": "3.7.1",
     "lodash.isequal": "4.5.0",
@@ -39,8 +40,7 @@
     "semantic-ui-react": "2.0.4",
     "styled-components": "5.3.3",
     "typescript": "4.4.4",
-    "uuid": "8.3.2",
-    "xml-js": "1.6.11"
+    "uuid": "8.3.2"
   },
   "devDependencies": {
     "@babel/plugin-proposal-nullish-coalescing-operator": "7.16.0",

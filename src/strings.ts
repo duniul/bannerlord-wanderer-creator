@@ -3,7 +3,7 @@ import { EquipmentTemplate } from './types/equipment';
 import { FaceTemplate } from './types/faceTemplates';
 import { Beard, HairMale, HairFemale } from './types/face';
 import { Skill } from './types/skills';
-import { Trait, TraitVariant } from './types/traits';
+import { Trait, TraitLevel } from './types/traits';
 import { Voice } from './types/voices';
 
 export const CultureLabels = {
@@ -51,37 +51,18 @@ export const TraitLabels = {
   [Trait.Valor]: 'Valor',
 };
 
-export const TraitVariantLabels = {
-  [Trait.Calculating]: {
-    [TraitVariant.Minus2]: 'Hotheaded',
-    [TraitVariant.Minus1]: 'Impulsive',
-    [TraitVariant.Plus1]: 'Calculating',
-    [TraitVariant.Plus2]: 'Cerebral',
-  },
-  [Trait.Mercy]: {
-    [TraitVariant.Minus2]: 'Sadistic',
-    [TraitVariant.Minus1]: 'Cruel',
-    [TraitVariant.Plus1]: 'Merciful',
-    [TraitVariant.Plus2]: 'Compassionate',
-  },
-  [Trait.Valor]: {
-    [TraitVariant.Minus2]: 'Very cautious',
-    [TraitVariant.Minus1]: 'Cautious',
-    [TraitVariant.Plus1]: 'Daring',
-    [TraitVariant.Plus2]: 'Fearless',
-  },
-  [Trait.Honor]: {
-    [TraitVariant.Minus2]: 'Deceitful',
-    [TraitVariant.Minus1]: 'Devious',
-    [TraitVariant.Plus1]: 'Honest',
-    [TraitVariant.Plus2]: 'Honorable',
-  },
-  [Trait.Generosity]: {
-    [TraitVariant.Minus2]: 'Tightfisted',
-    [TraitVariant.Minus1]: 'Closefisted',
-    [TraitVariant.Plus1]: 'Generous',
-    [TraitVariant.Plus2]: 'Munificent',
-  },
+type TraitLevelLabels = Record<TraitLevel, string>;
+
+function createTraitLevelLabels(neg2: string, neg1: string, pos1: string, pos2: string): TraitLevelLabels {
+  return { '-2': neg2, '-1': neg1, 1: pos1, 2: pos2 };
+}
+
+export const TRAIT_LEVEL_LABELS: Record<Trait, TraitLevelLabels> = {
+  Calculating: createTraitLevelLabels('Hotheaded', 'Impulsive', 'Calculating', 'Cerebral'),
+  Generosity: createTraitLevelLabels('Sadistic', 'Cruel', 'Merciful', 'Compassionate'),
+  Mercy: createTraitLevelLabels('Tightfisted', 'Closefisted', 'Generous', 'Compassionate'),
+  Valor: createTraitLevelLabels('Very cautious', 'Cautious', 'Daring', 'Munificent'),
+  Honor: createTraitLevelLabels('Deceitful', 'Devious', 'Honest', 'Honorable'),
 };
 
 export const HairLabels = {

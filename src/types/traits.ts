@@ -1,3 +1,9 @@
+
+
+export const TRAIT_LEVELS = [-2, -1, 1, 2] as const;
+
+export type TraitLevel = typeof TRAIT_LEVELS[number];
+
 export enum Trait {
   Calculating = 'Calculating',
   Generosity = 'Generosity',
@@ -6,17 +12,8 @@ export enum Trait {
   Valor = 'Valor',
 }
 
-export enum TraitVariant {
-  Minus2 = '-2',
-  Minus1 = '-1',
-  Zero = '0',
-  Plus1 = '1',
-  Plus2 = '2',
-}
-
 export type Traits = {
-  [K in Trait]?: TraitVariant;
+  [K in Trait]?: TraitLevel;
 };
 
-export const traits = Object.values(Trait);
-export const traitVariants = Object.values(TraitVariant) as TraitVariant[];
+export const TRAITS = Object.values(Trait);
