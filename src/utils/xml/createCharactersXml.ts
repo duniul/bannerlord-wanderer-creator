@@ -1,3 +1,4 @@
+import { encodeXML } from 'entities';
 import { Face } from '../../types/face';
 import { WandererWithoutDialogue } from '../../types/wanderers';
 import { XmlFace, XmlIdValueTag, XmlNpcCharacter, XmlNpcCharactersFile } from '../../types/xml';
@@ -65,7 +66,7 @@ function createJsXmlWanderer(wanderer: WandererWithoutDialogue): XmlNpcCharacter
   return {
     _attrs: {
       id,
-      name: name.replace('"', '&quot;'),
+      name: encodeXML(name),
       age,
       voice,
       culture: 'Culture.' + culture,

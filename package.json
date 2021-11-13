@@ -27,6 +27,7 @@
   "dependencies": {
     "@sentry/browser": "6.14.3",
     "array-flat-polyfill": "1.0.1",
+    "entities": "3.0.1",
     "fast-xml-parser": "3.21.1",
     "file-saver": "2.0.5",
     "jszip": "3.7.1",
