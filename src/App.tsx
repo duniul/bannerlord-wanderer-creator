@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Icon, Menu } from 'semantic-ui-react';
 import styled, { createGlobalStyle } from 'styled-components';
 import FaqPage from './components/FaqPage';
@@ -39,7 +39,6 @@ const AppHeader = styled.header`
 `;
 
 const PATHS = {
-  ROOT: '/',
   WANDERERS: '/wanderers',
   FAQ: '/wanderers/faq',
 };
@@ -61,15 +60,10 @@ const App = () => {
             </Menu>
           </AppHeader>
 
-          <Switch>
-            <Route exact path={PATHS.FAQ}>
-              <FaqPage />
-            </Route>
-            <Route path={PATHS.WANDERERS}>
-              <WandererPage />
-            </Route>
-            <Redirect to={PATHS.WANDERERS} />
-          </Switch>
+          <Routes>
+            <Route path={PATHS.WANDERERS + '/*'} element={<WandererPage />} />
+            <Route path={PATHS.FAQ} element={<FaqPage />} />
+          </Routes>
         </ModOptionsProvider>
       </BrowserRouter>
     </AppWrapper>
