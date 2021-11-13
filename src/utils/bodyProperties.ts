@@ -1,30 +1,23 @@
-import convert from 'xml-js';
 import { BodyProperties } from '../types/face';
+import { XmlFaceWithBodyProperties } from '../types/xml';
+import { parseJsToXml, parseXmlToJs } from './xml/xmlParser';
 
-export function mapBodyPropertiesJsonToXml(bodyProperties: BodyProperties): string {
+export function bodyPropertiesJsToXml(bodyProperties: BodyProperties): string {
+  const jsXmlBodyProperties: XmlFaceWithBodyProperties = { BodyProperties: { _attrs: bodyProperties } };
+
   try {
-    const xmlString = convert.js2xml({
-      elements: [
-        {
-          type: 'element',
-          name: 'BodyProperties',
-          attributes: bodyProperties,
-        },
-      ],
-    });
-
-    return xmlString;
+    return parseJsToXml(jsXmlBodyProperties);
   } catch (error) {
-    return '';
+    return 'waaa';
   }
 }
 
-export function mapBodyPropertiesXmlToJson(xmlString: string): BodyProperties {
-  const { name, attributes } = convert.xml2js(xmlString).elements[0];
+export function bodyPropertiesXmlToJs(xmlString: string): BodyProperties {
+  const { BodyProperties } = parseXmlToJs<XmlFaceWithBodyProperties>(xmlString);
 
-  if (name !== 'BodyProperties' || !attributes.version || !attributes.key) {
+  if (!BodyProperties || !BodyProperties._attrs.version || !BodyProperties._attrs.key) {
     throw Error('Invalid BodyProperties');
   }
 
-  return attributes as BodyProperties;
+  return BodyProperties._attrs;
 }

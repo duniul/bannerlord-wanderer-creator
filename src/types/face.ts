@@ -46,19 +46,9 @@ export interface BodyProperties {
   build?: number;
 }
 
-export interface BaseFace {
+export interface Face {
   bodyProperties?: BodyProperties;
-}
-
-export interface FemaleFace extends BaseFace {
   template?: FaceTemplate;
-  hair?: HairFemale;
-}
-
-export interface MaleFace extends BaseFace {
-  template?: FaceTemplate;
-  hair?: HairMale;
+  hair?: Hair;
   beard?: Beard;
 }
-
-export type Face = MaleFace | FemaleFace;

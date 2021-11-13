@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import { TraitVariantLabels } from '../strings';
-import { Trait } from '../types/traits';
+import { TRAIT_LEVEL_LABELS } from '../strings';
+import { Trait, TraitLevel } from '../types/traits';
 
 interface TraitTagProps {
   trait: Trait;
-  value?: string;
+  value?: TraitLevel;
 }
 
 enum TagType {
@@ -30,7 +30,7 @@ const Tag = styled.div<{ type: TagType }>`
 
 const TraitTag = ({ trait, value }: TraitTagProps): JSX.Element | null => {
   const numberValue = Number(value);
-  const label = value && (TraitVariantLabels as any)[trait]?.[value];
+  const label = value && TRAIT_LEVEL_LABELS[trait]?.[value];
 
   if (!label || !value || numberValue === 0) {
     return null;

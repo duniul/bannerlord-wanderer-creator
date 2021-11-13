@@ -1,25 +1,20 @@
-import convert from 'xml-js';
-import { WandererWithoutDialogue } from '../../types/wanderers';
 import { Culture } from '../../types/culture';
-import { CivilianEquipmentTemplate, BattleEquipmentTemplate } from '../../types/equipment';
+import { BattleEquipmentTemplate, CivilianEquipmentTemplate } from '../../types/equipment';
 import { Beard, Face, Hair } from '../../types/face';
 import { FaceTemplate } from '../../types/faceTemplates';
-import { Skill, Skills } from '../../types/skills';
-import { Trait, Traits, TraitVariant } from '../../types/traits';
 import { UnitGroup } from '../../types/unitGroups';
 import { Voice } from '../../types/voices';
+import { WandererWithoutDialogue } from '../../types/wanderers';
 import {
-  BeardXML,
-  BodyPropertiesXML,
-  WandererXML,
-  FaceTemplateXML,
-  FaceXML,
-  HairXML,
-  SkillsXML,
-  TraitsXML,
+  isXmlFaceWithBodyProperties,
+  XmlFace,
+  XmlIdValueTag,
+  XmlNpcCharacter,
+  XmlNpcCharactersFile,
 } from '../../types/xml';
+import { parseXmlToJs } from './xmlParser';
 
-function stripXmlScope(str: string | undefined) {
+function stripXmlScope(str: string | undefined): string | undefined {
   if (!str) {
     return str;
   }
@@ -33,49 +28,42 @@ function stripXmlScope(str: string | undefined) {
   return str;
 }
 
-function mapFaceXMLToJson(xmlFace: FaceXML): Face {
-  const { elements } = xmlFace;
-  const xmlBodyProperties = (elements as BodyPropertiesXML[]).find((el) => el.name === 'BodyProperties', undefined);
+function asSingleTag<T = unknown>(tagOrTags: T): T extends any[] ? never : T {
+  return Array.isArray(tagOrTags) ? tagOrTags[0] : tagOrTags;
+}
 
-  if (xmlBodyProperties) {
-    return { bodyProperties: xmlBodyProperties.attributes };
+function asTagArray<T = unknown>(tagOrTags: T): T extends any[] ? T : never {
+  if (!tagOrTags) {
+    return [] as any;
   }
 
-  const xmlFaceTemplate = (elements as FaceTemplateXML[]).find((el: any) => el.name === 'face_key_template');
-  const xmlHair = (elements as HairXML[]).find((el: any) => el.name === 'hair_tags');
-  const xmlBeard = (elements as BeardXML[]).find((el: any) => el.name === 'beard_tags');
+  return Array.isArray(tagOrTags) ? (tagOrTags as any) : [tagOrTags];
+}
+
+function parseXmlFace(xmlFace: XmlFace): Face {
+  if (isXmlFaceWithBodyProperties(xmlFace)) {
+    return { bodyProperties: xmlFace.BodyProperties._attrs };
+  }
 
   return {
-    template: stripXmlScope(xmlFaceTemplate?.attributes.value) as FaceTemplate,
-    hair: xmlHair?.elements?.[0]?.attributes.name as Hair,
-    beard: xmlBeard?.elements?.[0]?.attributes.name as Beard,
+    template: xmlFace.face_key_template._attrs.value as FaceTemplate,
+    hair: asSingleTag(xmlFace.hair_tags?.hair_tag)?._attrs.name as Hair,
+    beard: asSingleTag(xmlFace.beard_tags?.beard_tag)?._attrs.name as Beard,
   };
 }
 
-function mapSkillsXMLToJson(xmlSkills: SkillsXML): Skills {
-  const skills: Skills = {};
+function parseIdValueTags(tags: XmlIdValueTag | XmlIdValueTag[] | undefined): Record<string, number> {
+  const record: Record<string, number> = {};
 
-  xmlSkills?.elements?.forEach((xmlSkill) => {
-    const { id, value } = xmlSkill.attributes;
-    skills[id as Skill] = Number(value);
+  asTagArray(tags)?.forEach((tag) => {
+    const { id, value } = tag._attrs;
+    record[id] = Number(value);
   });
 
-  return skills;
+  return record;
 }
 
-function mapTraitsXMLToJson(xmlTraits: TraitsXML): Traits {
-  const traits: Traits = {};
-
-  xmlTraits?.elements?.forEach((xmlTrait) => {
-    const { id, value } = xmlTrait.attributes;
-    traits[id as Trait] = value as TraitVariant;
-  });
-
-  return traits;
-}
-
-function mapWandererXMLToJson(xmlWanderer: WandererXML): WandererWithoutDialogue {
-  const { attributes, elements } = xmlWanderer;
+function parseXmlNpcCharacter(xmlNpcCharacter: XmlNpcCharacter): WandererWithoutDialogue {
   const {
     id,
     name,
@@ -86,30 +74,25 @@ function mapWandererXMLToJson(xmlWanderer: WandererXML): WandererWithoutDialogue
     civilianTemplate,
     is_female: isFemale,
     default_group: defaultGroup,
-  } = attributes;
-
-  const xmlFace = elements.find((el) => el.name === 'face');
-  const xmlSkills = elements.find((el) => el.name === 'skills');
-  const xmlTraits = elements.find((el) => el.name === 'Traits');
+  } = xmlNpcCharacter._attrs;
 
   return {
     id,
     name: name.replace('&quot;', '"'),
-    age: age ? Number(age) : undefined,
+    age,
     voice: voice as Voice,
     culture: stripXmlScope(culture) as Culture,
     battleTemplate: stripXmlScope(battleTemplate) as BattleEquipmentTemplate,
     civilianTemplate: stripXmlScope(civilianTemplate) as CivilianEquipmentTemplate,
-    isFemale: isFemale === 'true',
+    isFemale: !!isFemale,
     defaultGroup: defaultGroup as UnitGroup,
-    face: xmlFace ? mapFaceXMLToJson(xmlFace as FaceXML) : {},
-    skills: xmlSkills ? mapSkillsXMLToJson(xmlSkills as SkillsXML) : {},
-    traits: xmlTraits ? mapTraitsXMLToJson(xmlTraits as TraitsXML) : {},
+    face: parseXmlFace(xmlNpcCharacter.face),
+    skills: parseIdValueTags(xmlNpcCharacter.skills?.skill),
+    traits: parseIdValueTags(xmlNpcCharacter.traits?.Trait),
   };
 }
 
 export function parseCharactersXml(xml: string): WandererWithoutDialogue[] {
-  const jsonResult = convert.xml2js(xml);
-  const xmlWanderers = jsonResult.elements[0].elements;
-  return xmlWanderers.map(mapWandererXMLToJson);
+  const jsXml = parseXmlToJs<XmlNpcCharactersFile>(xml);
+  return asTagArray(jsXml.NPCCharacters.NPCCharacter).map(parseXmlNpcCharacter);
 }

@@ -1,7 +1,7 @@
 import JSZip from 'jszip';
 import { Wanderer, WandererModule } from '../types/wanderers';
 import { parseCharactersXml } from './xml/parseCharactersXml';
-import { DialoguesByCharacterId, parseWandererStringsXml } from './xml/parseWandererStringsXml';
+import { parseWandererStringsXml, WandererDialogues } from './xml/parseWandererStringsXml';
 import { parseSubModuleXml } from './xml/subModuleXml';
 
 const CHARACTERS_REGEX = /\/(spspecialcharacters.*\.xml)$/g;
@@ -45,7 +45,7 @@ async function unzipModXmls(zippedModFile: File) {
 async function loadMod(zippedModFile: File): Promise<WandererModule> {
   const { characterXmls, wandererStringsXmls, subModuleXml } = await unzipModXmls(zippedModFile);
 
-  const dialogues: DialoguesByCharacterId = wandererStringsXmls.reduce((acc, stringsXml) => {
+  const dialogues: WandererDialogues = wandererStringsXmls.reduce((acc, stringsXml) => {
     const parsedStrings = parseWandererStringsXml(stringsXml);
     return { ...acc, ...parsedStrings };
   }, {});
