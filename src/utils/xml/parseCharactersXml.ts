@@ -1,3 +1,4 @@
+import { decodeXML } from 'entities';
 import { Culture } from '../../types/culture';
 import { BattleEquipmentTemplate, CivilianEquipmentTemplate } from '../../types/equipment';
 import { Beard, Face, Hair } from '../../types/face';
@@ -10,7 +11,7 @@ import {
   XmlFace,
   XmlIdValueTag,
   XmlNpcCharacter,
-  XmlNpcCharactersFile,
+  XmlNpcCharactersFile
 } from '../../types/xml';
 import { parseXmlToJs } from './xmlParser';
 
@@ -78,7 +79,7 @@ function parseXmlNpcCharacter(xmlNpcCharacter: XmlNpcCharacter): WandererWithout
 
   return {
     id,
-    name: name.replace('&quot;', '"'),
+    name: decodeXML(name),
     age,
     voice: voice as Voice,
     culture: stripXmlScope(culture) as Culture,
