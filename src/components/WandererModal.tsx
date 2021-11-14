@@ -171,8 +171,9 @@ const WandererModal = ({ wanderer, onUpdate, onClose, ...modalProps }: WandererM
       <Modal.Content style={{ padding: 32 }}>
         <StyledForm id={FORM_ID} size="large">
           <Header dividing>Character info</Header>
-          <FormGroup widths="equal">
             <NameInput value={formValues.name} error={errors?.name} onChange={handleValueChange} />
+
+          <FormGroup widths="equal">
             <Form.Input
               value={formValues.age}
               error={errors?.age}
@@ -184,10 +185,10 @@ const WandererModal = ({ wanderer, onUpdate, onClose, ...modalProps }: WandererM
               max={100}
               fluid
             />
+            <CultureSelect value={formValues.culture} onChange={handleValueChange} />
+            <UnitGroupSelect value={formValues.defaultGroup} onChange={handleValueChange} />
           </FormGroup>
 
-          <CultureSelect value={formValues.culture} onChange={handleValueChange} />
-          <UnitGroupSelect value={formValues.defaultGroup} onChange={handleValueChange} />
           <SexRadioGroup isFemale={formValues.isFemale!} onChange={handleValueChange} />
           <VoiceRadioGroup value={formValues.voice!} onChange={handleValueChange} />
 

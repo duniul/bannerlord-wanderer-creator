@@ -1,5 +1,10 @@
 import React, { useCallback, useEffect } from 'react';
-import { Form, InputOnChangeData } from 'semantic-ui-react';
+import { Form, Input, InputOnChangeData } from 'semantic-ui-react';
+import styled from 'styled-components';
+
+const Tip = styled.span`
+  font-size: 12px;
+`;
 
 interface NameInputProps {
   value?: string;
@@ -25,13 +30,7 @@ const NameInput = ({ value, error, onChange }: NameInputProps) => {
   }, [error]);
 
   return (
-    <Form.Input
-      id={NAME_ID}
-      name={NAME_ID}
-      label="Surname or title"
-      placeholder="Oakenshield, dey Oks, the Strong"
-      value={value}
-      onChange={handleChange}
+    <Form.Field
       required
       error={
         error && {
@@ -39,7 +38,23 @@ const NameInput = ({ value, error, onChange }: NameInputProps) => {
           pointing: 'above',
         }
       }
-    />
+    >
+      <label>Name</label>
+      <Input
+        style={{ marginBottom: 0 }}
+        id={NAME_ID}
+        name={NAME_ID}
+        placeholder="Enter name"
+        value={value}
+        onChange={handleChange}
+        required
+      />
+      <Tip>
+        Multiple wanderers with the same name may show up after a while. To avoid this you can use the tag{' '}
+        {'{HERO.FIRSTNAME}'} in the name to have it replaced by a random cultural name. Example: "{'{HERO.FIRSTNAME}'}{' '}
+        the Strong" may show up as "John the Strong".
+      </Tip>
+    </Form.Field>
   );
 };
 
