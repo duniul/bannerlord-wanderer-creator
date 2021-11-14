@@ -1,7 +1,15 @@
 import { encodeXML } from 'entities';
+import { EquipmentRoster, EquipmentSlot } from '../../types/equipment';
 import { Face } from '../../types/face';
 import { WandererWithoutDialogue } from '../../types/wanderers';
-import { XmlFace, XmlIdValueTag, XmlNpcCharacter, XmlNpcCharactersFile } from '../../types/xml';
+import {
+  XmlEquipmentItem,
+  XmlEquipmentRoster,
+  XmlFace,
+  XmlIdValueTag,
+  XmlNpcCharacter,
+  XmlNpcCharactersFile,
+} from '../../types/xml';
 import { parseJsToXml } from './xmlParser';
 
 function createJsXmlFace(face: Face): XmlFace {
@@ -47,6 +55,24 @@ function createIdValueTags(keyNumberObj: Record<string, number>): XmlIdValueTag[
     .map(([id, value]) => ({ _attrs: { id, value } }));
 }
 
+function createJsXmlEquipmentRoster(roster: EquipmentRoster, civilian: boolean): XmlEquipmentRoster | undefined {
+  const equipment: XmlEquipmentItem[] = Object.entries(roster)
+    .filter(([, id]) => !!id)
+    .map(([slot, id]) => ({ _attrs: { id, slot: slot as EquipmentSlot } }));
+
+  if (equipment.length === 0) {
+    return undefined;
+  }
+
+  const xmlRoster: XmlEquipmentRoster = { _attrs: {}, equipment };
+
+  if (civilian) {
+    xmlRoster._attrs.civilian = true;
+  }
+
+  return xmlRoster;
+}
+
 function createJsXmlWanderer(wanderer: WandererWithoutDialogue): XmlNpcCharacter {
   const {
     id,
@@ -54,24 +80,27 @@ function createJsXmlWanderer(wanderer: WandererWithoutDialogue): XmlNpcCharacter
     age,
     voice,
     culture,
-    battleTemplate,
-    civilianTemplate,
     isFemale,
     defaultGroup,
     face,
     skills,
     traits,
+    battleEquipment,
+    civilianEquipment,
   } = wanderer;
 
-  return {
+  const skillTags = createIdValueTags(skills);
+  const traitTags = createIdValueTags(traits);
+  const battleRoster = createJsXmlEquipmentRoster(battleEquipment, false);
+  const civilianRoster = createJsXmlEquipmentRoster(civilianEquipment, true);
+
+  const xmlNpcCharacter: XmlNpcCharacter = {
     _attrs: {
       id,
       name: encodeXML(name),
       age,
       voice,
       culture: 'Culture.' + culture,
-      battleTemplate: 'NPCCharacter.' + battleTemplate,
-      civilianTemplate: 'NPCCharacter.' + civilianTemplate,
       default_group: defaultGroup,
       is_female: isFemale || undefined,
       is_template: true,
@@ -79,9 +108,23 @@ function createJsXmlWanderer(wanderer: WandererWithoutDialogue): XmlNpcCharacter
       occupation: 'Wanderer',
     },
     face: createJsXmlFace(face),
-    skills: { skill: createIdValueTags(skills) },
-    traits: { Trait: createIdValueTags(traits) },
   };
+
+  if (skillTags.length) {
+    xmlNpcCharacter.skills = { skill: skillTags };
+  }
+
+  if (traitTags.length) {
+    xmlNpcCharacter.Traits = { Trait: traitTags };
+  }
+
+  if (battleRoster || civilianRoster) {
+    xmlNpcCharacter.Equipments = {
+      EquipmentRoster: [battleRoster, civilianRoster].filter((roster): roster is XmlEquipmentRoster => !!roster),
+    };
+  }
+
+  return xmlNpcCharacter;
 }
 
 export function createCharactersXml(wanderers: WandererWithoutDialogue[]): string {
@@ -90,6 +133,8 @@ export function createCharactersXml(wanderers: WandererWithoutDialogue[]): strin
       NPCCharacter: wanderers.map(createJsXmlWanderer),
     },
   };
+
+  console.log(JSON.stringify(wanderers, null, 2));
 
   return parseJsToXml(jsXml, { declaration: true });
 }

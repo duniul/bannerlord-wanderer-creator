@@ -1,10 +1,10 @@
 import { Culture } from './culture';
-import { CivilianEquipmentTemplate, BattleEquipmentTemplate } from './equipment';
 import { Face } from './face';
 import { Skills } from './skills';
 import { Traits } from './traits';
 import { Voice } from './voices';
 import { UnitGroup } from './unitGroups';
+import { EquipmentRoster } from './equipment';
 
 export interface Dialogue {
   prebackstory?: string;
@@ -23,18 +23,17 @@ export interface WandererWithoutDialogue {
   voice: Voice;
   culture: Culture;
   isFemale: boolean;
-  battleTemplate: BattleEquipmentTemplate;
-  civilianTemplate: CivilianEquipmentTemplate;
   defaultGroup: UnitGroup;
   face: Face;
   skills: Skills;
   traits: Traits;
+  battleEquipment: EquipmentRoster;
+  civilianEquipment: EquipmentRoster;
 }
 
 export interface Wanderer extends WandererWithoutDialogue {
   dialogue: Dialogue;
 }
-
 
 export interface WandererModule {
   name: string;

@@ -62,6 +62,8 @@
     "@types/uuid": "8.3.1",
     "clipboardy": "3.0.0",
     "eslint-plugin-prettier": "4.0.0",
+    "fs-extra": "10.0.0",
+    "globby": "11.0.3",
     "prettier": "2.4.1",
     "react-scripts": "4.0.3"
   }

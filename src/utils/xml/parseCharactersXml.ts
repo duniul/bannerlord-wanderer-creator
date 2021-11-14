@@ -1,6 +1,6 @@
 import { decodeXML } from 'entities';
 import { Culture } from '../../types/culture';
-import { BattleEquipmentTemplate, CivilianEquipmentTemplate } from '../../types/equipment';
+import { EquipmentRoster } from '../../types/equipment';
 import { Beard, Face, Hair } from '../../types/face';
 import { FaceTemplate } from '../../types/faceTemplates';
 import { UnitGroup } from '../../types/unitGroups';
@@ -8,6 +8,8 @@ import { Voice } from '../../types/voices';
 import { WandererWithoutDialogue } from '../../types/wanderers';
 import {
   isXmlFaceWithBodyProperties,
+  XmlEquipmentRoster,
+  XmlEquipments,
   XmlFace,
   XmlIdValueTag,
   XmlNpcCharacter,
@@ -41,7 +43,11 @@ function asTagArray<T = unknown>(tagOrTags: T): T extends any[] ? T : never {
   return Array.isArray(tagOrTags) ? (tagOrTags as any) : [tagOrTags];
 }
 
-function parseXmlFace(xmlFace: XmlFace): Face {
+function parseXmlFace(xmlFace: XmlFace | undefined): Face {
+  if (!xmlFace) {
+    return {};
+  }
+
   if (isXmlFaceWithBodyProperties(xmlFace)) {
     return { bodyProperties: xmlFace.BodyProperties._attrs };
   }
@@ -56,7 +62,7 @@ function parseXmlFace(xmlFace: XmlFace): Face {
 function parseIdValueTags(tags: XmlIdValueTag | XmlIdValueTag[] | undefined): Record<string, number> {
   const record: Record<string, number> = {};
 
-  asTagArray(tags)?.forEach((tag) => {
+  asTagArray(tags).forEach((tag) => {
     const { id, value } = tag._attrs;
     record[id] = Number(value);
   });
@@ -64,18 +70,38 @@ function parseIdValueTags(tags: XmlIdValueTag | XmlIdValueTag[] | undefined): Re
   return record;
 }
 
+function parseXmlEquipmentRoster(xmlEquipmentRoster: XmlEquipmentRoster | undefined): EquipmentRoster {
+  const equipment: EquipmentRoster = {};
+
+  asTagArray(xmlEquipmentRoster?.equipment).forEach((xmlItem) => {
+    const { id, slot } = xmlItem._attrs;
+    equipment[slot] = id;
+  });
+
+  return equipment;
+}
+
+function parseXmlEquipments(
+  xmlEquipments: XmlEquipments | undefined
+): { battleEquipment: EquipmentRoster; civilianEquipment: EquipmentRoster } {
+  if (!xmlEquipments) {
+    return { battleEquipment: {}, civilianEquipment: {} };
+  }
+
+  const rosters = asTagArray(xmlEquipments.EquipmentRoster);
+  const battleRoster = rosters.find((roster) => !roster._attrs.civilian);
+  const civilianRoster = rosters.find((roster) => !!roster._attrs.civilian);
+
+  return {
+    battleEquipment: parseXmlEquipmentRoster(battleRoster),
+    civilianEquipment: parseXmlEquipmentRoster(civilianRoster),
+  };
+}
+
 function parseXmlNpcCharacter(xmlNpcCharacter: XmlNpcCharacter): WandererWithoutDialogue {
-  const {
-    id,
-    name,
-    age,
-    voice,
-    culture,
-    battleTemplate,
-    civilianTemplate,
-    is_female: isFemale,
-    default_group: defaultGroup,
-  } = xmlNpcCharacter._attrs;
+  const { id, name, age, voice, culture, is_female: isFemale, default_group: defaultGroup } = xmlNpcCharacter._attrs;
+
+  const { battleEquipment, civilianEquipment } = parseXmlEquipments(xmlNpcCharacter.Equipments);
 
   return {
     id,
@@ -83,13 +109,13 @@ function parseXmlNpcCharacter(xmlNpcCharacter: XmlNpcCharacter): WandererWithout
     age,
     voice: voice as Voice,
     culture: stripXmlScope(culture) as Culture,
-    battleTemplate: stripXmlScope(battleTemplate) as BattleEquipmentTemplate,
-    civilianTemplate: stripXmlScope(civilianTemplate) as CivilianEquipmentTemplate,
     isFemale: !!isFemale,
     defaultGroup: defaultGroup as UnitGroup,
     face: parseXmlFace(xmlNpcCharacter.face),
     skills: parseIdValueTags(xmlNpcCharacter.skills?.skill),
-    traits: parseIdValueTags(xmlNpcCharacter.traits?.Trait),
+    traits: parseIdValueTags(xmlNpcCharacter.Traits?.Trait),
+    battleEquipment,
+    civilianEquipment,
   };
 }
 

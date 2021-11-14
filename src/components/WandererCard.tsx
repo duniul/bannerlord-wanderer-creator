@@ -2,15 +2,15 @@ import React, { useCallback, useMemo, useState } from 'react';
 import { Button, Item, Popup, Segment, SemanticSIZES } from 'semantic-ui-react';
 import styled from 'styled-components';
 import useBooleanSetters from '../hooks/useBooleanSetters';
-import { CultureLabels, EquipmentLabels } from '../strings';
-import { Wanderer } from '../types/wanderers';
+import { CultureLabels } from '../strings';
 import { Culture } from '../types/culture';
 import { Trait, Traits } from '../types/traits';
+import { Wanderer } from '../types/wanderers';
 import { sumSkillPoints } from '../utils/skills';
+import LinkButton from './LinkButton';
+import TraitTag from './TraitTag';
 import WandererAvatar from './WandererAvatar';
 import WandererModal from './WandererModal';
-import TraitTag from './TraitTag';
-import LinkButton from './LinkButton';
 
 interface WandererCardProps {
   wanderer: Wanderer;
@@ -77,7 +77,7 @@ function renderTraits(traits?: Traits): JSX.Element[] {
 
 const WandererCard = React.memo<WandererCardProps>(
   ({ wanderer, onUpdate, onDelete }): JSX.Element => {
-    const { id, name, age, isFemale, culture, skills, traits, battleTemplate, dialogue } = wanderer;
+    const { id, name, age, isFemale, culture, skills, traits, dialogue } = wanderer;
     const [active, setActive] = useState<boolean>(false);
     const [visiblePopup, setVisiblePopup] = useState<boolean>(false);
     const [visibleModal, setVisibleModal] = useState<boolean>(false);
@@ -105,7 +105,6 @@ const WandererCard = React.memo<WandererCardProps>(
               <Item.Meta>
                 {isFemale ? 'Female' : 'Male'}, {age} ∙ {CultureLabels[culture]} ∙ {sumSkillPoints(skills)} skill points
               </Item.Meta>
-              <Item.Meta style={{ marginBottom: 0 }}>{EquipmentLabels[battleTemplate]}</Item.Meta>
               <TraitsArea>{traitLabels}</TraitsArea>
               <Item.Description>
                 <i>

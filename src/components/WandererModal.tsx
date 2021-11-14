@@ -8,8 +8,6 @@ import { cultures } from '../types/culture';
 import { voices } from '../types/voices';
 import { Wanderer } from '../types/wanderers';
 import { bodyPropertiesJsToXml, bodyPropertiesXmlToJs } from '../utils/bodyProperties';
-import BattleTemplateSelect from './form/BattleTemplateSelect';
-import CivilianTemplateSelect from './form/CivilianTemplateSelect';
 import CultureSelect from './form/CultureSelect';
 import { BeardSelect, FaceTemplateSelect, HairSelect } from './form/faceSelects';
 import FormGrid from './form/FormGrid';
@@ -22,6 +20,7 @@ import VoiceRadioGroup from './form/VoiceRadioGroup';
 import WandererDialogue from './WandererDialogue';
 import { UnitGroup } from '../types/unitGroups';
 import useBooleanSetters from '../hooks/useBooleanSetters';
+import EquipmentSelects from './form/EquipmentSelects';
 
 interface WandererModalProps extends Pick<ModalProps, Exclude<keyof ModalProps, 'onClose'>> {
   wanderer?: Wanderer;
@@ -110,14 +109,6 @@ const WandererModal = ({ wanderer, onUpdate, onClose, ...modalProps }: WandererM
       set(newErrors, 'age', 'Age must be between 18 and 100.');
     }
 
-    if (!values.battleTemplate) {
-      set(newErrors, 'battleTemplate', REQUIRED_LABEL);
-    }
-
-    if (!values.civilianTemplate) {
-      set(newErrors, 'civilianTemplate', REQUIRED_LABEL);
-    }
-
     let bodyProperties;
 
     if (useCustomFace) {
@@ -127,7 +118,11 @@ const WandererModal = ({ wanderer, onUpdate, onClose, ...modalProps }: WandererM
         try {
           bodyProperties = bodyPropertiesXmlToJs(values.bodyPropertiesString);
         } catch (e) {
-          set(newErrors, 'bodyPropertiesString', 'Invalid BodyProperies XML (must be a BodyProperties element with a version and key, e.g. <BodyProperties version="x" key="x" />)');
+          set(
+            newErrors,
+            'bodyPropertiesString',
+            'Invalid BodyProperies XML (must be a BodyProperties element with a version and key, e.g. <BodyProperties version="x" key="x" />)'
+          );
         }
       }
     } else {
@@ -196,21 +191,6 @@ const WandererModal = ({ wanderer, onUpdate, onClose, ...modalProps }: WandererM
           <SexRadioGroup isFemale={formValues.isFemale!} onChange={handleValueChange} />
           <VoiceRadioGroup value={formValues.voice!} onChange={handleValueChange} />
 
-          <Header dividing>Equipment</Header>
-
-          <Form.Group widths="equal">
-            <BattleTemplateSelect
-              value={formValues.battleTemplate}
-              error={errors?.battleTemplate}
-              onChange={handleValueChange}
-            />
-            <CivilianTemplateSelect
-              value={formValues.civilianTemplate}
-              error={errors?.civilianTemplate}
-              onChange={handleValueChange}
-            />
-          </Form.Group>
-
           <Header dividing>Appearance</Header>
 
           <Form.Checkbox
@@ -230,9 +210,7 @@ const WandererModal = ({ wanderer, onUpdate, onClose, ...modalProps }: WandererM
               />
               <HairSelect isFemale={!!formValues.isFemale} onChange={handleValueChange} value={formValues.face?.hair} />
 
-              {!formValues.isFemale && (
-                <BeardSelect value={formValues.face?.beard} onChange={handleValueChange} />
-              )}
+              {!formValues.isFemale && <BeardSelect value={formValues.face?.beard} onChange={handleValueChange} />}
             </FormGrid>
           ) : (
             <Form.Input
@@ -263,6 +241,17 @@ const WandererModal = ({ wanderer, onUpdate, onClose, ...modalProps }: WandererM
           <FormGrid columns={3}>
             <SkillInputs skills={formValues.skills} onChange={handleValueChange} />
           </FormGrid>
+
+          <Header dividing>Battle equipment</Header>
+          <EquipmentSelects name="battleEquipment" value={formValues.battleEquipment} onChange={handleValueChange} />
+
+          <Header dividing>Civilian equipment</Header>
+          <EquipmentSelects
+            name="civilianEquipment"
+            value={formValues.civilianEquipment}
+            onChange={handleValueChange}
+            civilian
+          />
 
           <Header dividing>Introduction dialogue</Header>
 
