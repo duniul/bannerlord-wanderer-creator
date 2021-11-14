@@ -13,12 +13,11 @@ interface NameInputProps {
 }
 
 const NAME_ID = 'name';
-const NAME_PATTERN = /[^a-zA-ZÀ-ÿ\d'\-'" ]/g;
 
 const NameInput = ({ value, error, onChange }: NameInputProps) => {
   const handleChange = useCallback(
     (event, data) => {
-      onChange(event, { ...data, value: data.value.replace(NAME_PATTERN, '') });
+      onChange(event, { ...data, value: data.value });
     },
     [onChange]
   );
