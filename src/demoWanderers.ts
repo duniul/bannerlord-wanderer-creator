@@ -1,18 +1,23 @@
-export const demoWanderers: any[] = [
+import { Culture } from './types/culture';
+import { UnitGroup } from './types/unitGroups';
+import { Voice } from './types/voices';
+import { Wanderer } from './types/wanderers';
+
+export const demoWanderers: Wanderer[] = [
   {
-    id: 'demowanderers_farquaad',
-    name: 'Farquaad',
-    voice: 'softspoken',
-    culture: 'empire',
-    battleTemplate: 'empire_lord_lady_battle_equipment',
-    civilianTemplate: 'empire_unarmored_noble_equipment',
+    id: 'demowanderers_lord_farquaad',
+    name: 'Lord Farquaad',
+    age: 42,
+    defaultGroup: UnitGroup.Infantry,
+    voice: Voice.SoftSpoken,
+    culture: Culture.Empire,
     isFemale: false,
     face: {
       bodyProperties: {
-        version: '4',
-        age: '30.9',
-        weight: '0.4',
-        build: '0',
+        version: 4,
+        age: 42,
+        weight: 0.4,
+        build: 0,
         key:
           '0005080E40FC000BAE7EFF0EEFC0FF1F01FF87808E00F00500180E0F8FF0F0F00100661400F8FFFF00000000000000000000000000000000000000007E043002',
       },
@@ -36,7 +41,17 @@ export const demoWanderers: any[] = [
       Medicine: 10,
       Engineering: 10,
     },
-    traits: { Calculating: '-2', Generosity: '-2', Honor: '-2', Mercy: '-2', Valor: '-1' },
+    traits: { Calculating: -2, Generosity: -2, Honor: -2, Mercy: -2, Valor: -1 },
+    battleEquipment: {
+      Body: 'imperial_robes',
+      Head: 'vlandia_crown',
+      Leg: 'fine_town_boots',
+    },
+    civilianEquipment: {
+      Body: 'imperial_robes',
+      Head: 'vlandia_crown',
+      Leg: 'fine_town_boots',
+    },
     dialogue: {
       prebackstory:
         'Forgive me, princess, for startling you but you startled me. For I have never seen such a radiant beauty before. I... am Lord Farquaad.',
@@ -49,19 +64,19 @@ export const demoWanderers: any[] = [
     },
   },
   {
-    id: 'demowanderers_swanson',
-    name: 'Swanson',
-    voice: 'curt',
-    culture: 'battania',
-    battleTemplate: 'npc_companion_equipment_template_battania',
-    civilianTemplate: 'npc_armed_wanderer_equipment_template_battania',
+    id: 'demowanderers_ron_swanson',
+    name: 'Ron Swanson',
+    age: 54,
+    defaultGroup: UnitGroup.Infantry,
+    voice: Voice.Curt,
+    culture: Culture.Battania,
     isFemale: false,
     face: {
       bodyProperties: {
-        version: '4',
-        age: '25',
-        weight: '0.5',
-        build: '0.6',
+        version: 4,
+        age: 54,
+        weight: 0.5,
+        build: 0.6,
         key:
           '0005040A002C280E808258024196312BF44A300546B807308A09100E89C41056018976130807A8F60000000000000000000000000000000000000000151C3102',
       },
@@ -85,7 +100,19 @@ export const demoWanderers: any[] = [
       Medicine: 50,
       Engineering: 50,
     },
-    traits: { Calculating: '-1', Generosity: '0', Honor: '1', Mercy: '0', Valor: '2' },
+    traits: { Calculating: -1, Honor: 1, Valor: 2 },
+    battleEquipment: {
+      Body: 'buckled_wildsman_armor',
+      Item0: 'execution_axe',
+      Cape: 'rough_bearskin',
+      Gloves: 'rough_tied_bracers',
+      Leg: 'rough_tied_boots',
+    },
+    civilianEquipment: {
+      Body: 'buckled_wildsman_armor',
+      Gloves: 'rough_tied_bracers',
+      Leg: 'rough_tied_boots',
+    },
     dialogue: {
       backstory_d: 'Don’t start chasing applause and acclaim. That way lies madness.',
       backstory_b:
@@ -100,19 +127,19 @@ export const demoWanderers: any[] = [
     },
   },
   {
-    id: 'demowanderers_of_the blackwater',
-    name: 'of the Blackwater',
-    voice: 'ironic',
-    culture: 'vlandia',
-    battleTemplate: 'npc_armed_wanderer_equipment_template_vlandia',
-    civilianTemplate: 'npc_wanderer_equipment_template_vlandia',
+    id: 'demowanderers_bronn_of_the blackwater',
+    name: 'Bronn of the Blackwater',
+    age: 46,
+    defaultGroup: UnitGroup.Infantry,
+    voice: Voice.Ironic,
+    culture: Culture.Vlandia,
     isFemale: false,
     face: {
       bodyProperties: {
-        version: '4',
-        age: '25.84',
-        weight: '0.5',
-        build: '0.5',
+        version: 4,
+        age: 46,
+        weight: 0.5,
+        build: 0.5,
         key:
           '0016000B54FC13437A824269551279772138526563789435969939079E843002019776130956596400000000000000000000000000000000000000004F3C3002',
       },
@@ -137,7 +164,17 @@ export const demoWanderers: any[] = [
       Medicine: 100,
       Engineering: 60,
     },
-    traits: { Calculating: '1', Generosity: '-2', Honor: '-1', Mercy: '0', Valor: '1' },
+    traits: { Calculating: 1, Generosity: -2, Honor: -1, Valor: 1 },
+    battleEquipment: {
+      Gloves: 'leather_gloves',
+      Leg: 'mail_chausses',
+      Body: 'vlandia_chainmail',
+    },
+    civilianEquipment: {
+      Body: 'vlandia_chainmail',
+      Gloves: 'leather_gloves',
+      Leg: 'mail_chausses',
+    },
     dialogue: {
       prebackstory:
         "The smart place to meet is in a tavern. That way if one party is late, the other can drink some ale. Need help to take a castle? I'm your man.",

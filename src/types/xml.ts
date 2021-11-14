@@ -1,3 +1,4 @@
+import { EquipmentSlot } from './equipment';
 import { BodyProperties } from './face';
 
 // These types represent objects equivalent to Bannerlord's XML tags.
@@ -19,8 +20,6 @@ export interface XmlNpcCharacter {
     name: string;
     voice: string;
     culture: string;
-    battleTemplate: string;
-    civilianTemplate: string;
     default_group: string;
     age: number;
     is_female: true | undefined;
@@ -29,8 +28,9 @@ export interface XmlNpcCharacter {
     occupation: 'Wanderer';
   },
   face: XmlFace;
-  skills: XmlSkills;
-  traits: XmlTraits;
+  skills?: XmlSkills;
+  Traits?: XmlTraits;
+  Equipments?: XmlEquipments;
 }
 
 //
@@ -105,6 +105,28 @@ export interface XmlIdValueTag {
     id: string;
     value: number;
   };
+}
+
+//
+// EQUIPMENT
+//
+
+export interface XmlEquipments {
+  EquipmentRoster: XmlEquipmentRoster | XmlEquipmentRoster[];
+}
+
+export interface XmlEquipmentRoster {
+  _attrs: {
+    civilian?: true;
+  },
+  equipment: XmlEquipmentItem | XmlEquipmentItem[];
+}
+
+export interface XmlEquipmentItem {
+  _attrs: {
+    id: string;
+    slot: EquipmentSlot;
+  }
 }
 
 //
