@@ -18,7 +18,7 @@ const AppWrapper = styled.div`
   min-width: 580px;
   max-width: 1200px;
   margin-top: 60px;
-  padding: 0 24px;
+  padding: 0 24px 24px;
 `;
 
 const AppHeader = styled.header`
@@ -51,11 +51,14 @@ const App = () => {
         <ModOptionsProvider>
           <AppHeader>
             <h1>Bannerlord Wanderer Creator</h1>
-            <Menu text>
+            <Menu size="massive" text>
               <MenuRouterItem name="Wanderers" to={PATHS.WANDERERS} />
               <MenuRouterItem name="FAQ" to={PATHS.FAQ} />
+              <Menu.Item href="https://www.nexusmods.com/mountandblade2bannerlord/mods/691" target="_blank" rel="noopener noreferrer">
+                Example mod
+              </Menu.Item>
               <Menu.Item href="https://github.com/duniul/butterlord-tools" target="_blank" rel="noopener noreferrer">
-                <Icon name="github" />
+                <Icon name="github" /> Github
               </Menu.Item>
             </Menu>
           </AppHeader>
