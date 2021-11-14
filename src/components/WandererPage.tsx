@@ -1,7 +1,8 @@
 import React, { useCallback, useState } from 'react';
-import { Button, Dropdown, Header, Icon } from 'semantic-ui-react';
+import { Button, Dropdown, Header, Icon, Popup } from 'semantic-ui-react';
 import styled from 'styled-components';
 import { useModOptions } from '../contexts/ModOptionsContext';
+import { demoWanderers } from '../demoWanderers';
 import useBooleanSetters from '../hooks/useBooleanSetters';
 import useSortWanderers from '../hooks/useSortWanderers';
 import { Wanderer } from '../types/wanderers';
@@ -10,7 +11,6 @@ import LinkButton from './LinkButton';
 import UploadModal from './UploadModal';
 import WandererCard from './WandererCard';
 import WandererModal from './WandererModal';
-import { demoWanderers } from '../demoWanderers';
 
 const StyledGrid = styled.div`
   display: grid;
@@ -132,6 +132,26 @@ const WandererPage = () => {
             <Icon name="download" />
             Download
           </Button>
+
+          <Popup
+            pinned
+            on="click"
+            position="bottom center"
+            trigger={
+              <Button size="small" color="red" disabled={wanderers.length === 0}>
+                <Icon name="remove" />
+                Clear
+              </Button>
+            }
+            content={
+              <span>
+                Are you sure? All wanderers will be removed.{' '}
+                <LinkButton onClick={() => setWanderers([])}>
+                  Confirm
+                </LinkButton>
+              </span>
+            }
+          />
           <Button size="small" onClick={openNewWandererModal} primary>
             <Icon name="plus" />
             New wanderer
@@ -157,7 +177,11 @@ const WandererPage = () => {
             Load a mod or press <i>New wanderer</i> to add one.
             <br />
             <small>
-              (I'm panicking, <LinkButton style={{ opacity: 0.8 }} onClick={loadDemoWanderers}>load some examples</LinkButton> for me!)
+              (I'm panicking,{' '}
+              <LinkButton style={{ opacity: 0.8 }} onClick={loadDemoWanderers}>
+                load some examples
+              </LinkButton>{' '}
+              for me!)
             </small>
           </p>
         </NoWanderersMessage>
