@@ -90,7 +90,7 @@ function createJsXmlWanderer(wanderer: WandererWithoutDialogue): XmlNpcCharacter
   } = wanderer;
 
   const skillTags = createIdValueTags(skills);
-  const traitTags = createIdValueTags(traits);
+  const traitTags = createIdValueTags(traits).filter((xmlTrait) => !!xmlTrait._attrs.value);
   const battleRoster = createJsXmlEquipmentRoster(battleEquipment, false);
   const civilianRoster = createJsXmlEquipmentRoster(civilianEquipment, true);
 
