@@ -28,13 +28,13 @@ const StyledCommentGroup = styled(Comment.Group)`
 `;
 
 const StyledComment = styled(Comment)`
-  ${(props) => (props.indent ? 'margin-left: 60px !important;' : '')}
+  ${(props) => (props.$indent ? 'margin-left: 60px !important;' : '')}
 `;
 
 const DialogueComment = React.memo(
   ({ name, inputId, description, avatar, value, indent, onChange }: DialogCommentProps) => {
     return (
-      <StyledComment indent={indent}>
+      <StyledComment $indent={indent}>
         {avatar}
         <Comment.Content>
           <Comment.Author as="span">{name}</Comment.Author>
