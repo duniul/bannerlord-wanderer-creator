@@ -14,16 +14,11 @@ import {
 import { EquipmentRoster, EquipmentSlot } from '../../types/equipment';
 
 function itemsToOptions(itemsObject: Record<string, Item>): DropdownItemProps[] {
-  return Object.values(itemsObject).map((item) => ({
-    key: item.id,
-    text: item.name,
-    value: item.id,
-    civilian: item.civilian,
-  }));
+  return Object.values(itemsObject).map((item) => ({ key: item.id, text: item.name, value: item.id }));
 }
 
-function filterCivilian(itemList: DropdownItemProps[]): DropdownItemProps[] {
-  return itemList.filter((item) => item.civilian);
+function filterCivilian(dropdownItemList: DropdownItemProps[], itemsObject: Record<string, Item>): DropdownItemProps[] {
+  return dropdownItemList.filter((item) => !!itemsObject[item.value as string]?.civilian);
 }
 
 const weaponOptions = itemsToOptions(WEAPONS);
@@ -44,13 +39,11 @@ const options: Record<EquipmentSlot, DropdownItemProps[]> = {
 
 const civilianOptions: Record<EquipmentSlot, DropdownItemProps[]> = {
   ...options,
-  Head: filterCivilian(options.Head),
-  Cape: filterCivilian(options.Cape),
-  Body: filterCivilian(options.Body),
-  Gloves: filterCivilian(options.Gloves),
-  Leg: filterCivilian(options.Leg),
-  Horse: filterCivilian(options.Horse),
-  HorseHarness: filterCivilian(options.HorseHarness),
+  Head: filterCivilian(options.Head, HEAD_ARMORS),
+  Cape: filterCivilian(options.Cape, CAPES),
+  Body: filterCivilian(options.Body, BODY_ARMORS),
+  Gloves: filterCivilian(options.Gloves, HAND_ARMORS),
+  Leg: filterCivilian(options.Leg, LEG_ARMORS),
 };
 
 export interface EquipmentSelectsProps {
