@@ -18,7 +18,12 @@ function itemsToOptions(itemsObject: Record<string, Item>): DropdownItemProps[] 
     key: item.id,
     text: item.name,
     value: item.id,
+    civilian: item.civilian,
   }));
+}
+
+function filterCivilian(itemList: DropdownItemProps[]): DropdownItemProps[] {
+  return itemList.filter((item) => item.civilian);
 }
 
 const weaponOptions = itemsToOptions(WEAPONS);
@@ -37,6 +42,17 @@ const options: Record<EquipmentSlot, DropdownItemProps[]> = {
   Item3: weaponOptions,
 };
 
+const civilianOptions: Record<EquipmentSlot, DropdownItemProps[]> = {
+  ...options,
+  Head: filterCivilian(options.Head),
+  Cape: filterCivilian(options.Cape),
+  Body: filterCivilian(options.Body),
+  Gloves: filterCivilian(options.Gloves),
+  Leg: filterCivilian(options.Leg),
+  Horse: filterCivilian(options.Horse),
+  HorseHarness: filterCivilian(options.HorseHarness),
+};
+
 export interface EquipmentSelectsProps {
   name: string;
   value: EquipmentRoster | undefined;
@@ -52,7 +68,7 @@ const EquipmentSelects = React.memo(({ name, value, onChange, civilian }: Equipm
     return {
       id: slot,
       name: slot,
-      options: options[slot],
+      options: civilian ? civilianOptions[slot] : options[slot],
       value: value?.[slot],
       onChange: (event, data) => {
         onChange(event, { name, value: { ...value, [slot]: data.value } });

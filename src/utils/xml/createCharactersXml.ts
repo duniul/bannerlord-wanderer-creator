@@ -134,7 +134,5 @@ export function createCharactersXml(wanderers: WandererWithoutDialogue[]): strin
     },
   };
 
-  console.log(JSON.stringify(wanderers, null, 2));
-
   return parseJsToXml(jsXml, { declaration: true });
 }
