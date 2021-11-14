@@ -102,7 +102,7 @@ function createJsXmlWanderer(wanderer: WandererWithoutDialogue): XmlNpcCharacter
       voice,
       culture: 'Culture.' + culture,
       default_group: defaultGroup,
-      is_female: isFemale || undefined,
+      is_female: isFemale,
       is_template: true,
       is_hero: false,
       occupation: 'Wanderer',

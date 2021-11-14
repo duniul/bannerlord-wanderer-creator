@@ -22,7 +22,7 @@ export interface XmlNpcCharacter {
     culture: string;
     default_group: string;
     age: number;
-    is_female: true | undefined;
+    is_female: boolean;
     is_template: true;
     is_hero: false;
     occupation: 'Wanderer';
