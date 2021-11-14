@@ -89,8 +89,8 @@ function parseXmlEquipments(
   }
 
   const rosters = asTagArray(xmlEquipments.EquipmentRoster);
-  const battleRoster = rosters.find((roster) => !roster._attrs.civilian);
-  const civilianRoster = rosters.find((roster) => !!roster._attrs.civilian);
+  const battleRoster = rosters.find((roster) => !roster._attrs?.civilian);
+  const civilianRoster = rosters.find((roster) => !!roster._attrs?.civilian);
 
   return {
     battleEquipment: parseXmlEquipmentRoster(battleRoster),
