@@ -39,6 +39,7 @@ const UploadModal = ({ onClose, ...modalProps }: UploadModalProps) => {
         })
         .catch((error) => {
           const eventId = captureException(error);
+          console.error(error);
           setLoading(false);
           setUploadErrorId(eventId);
         });
