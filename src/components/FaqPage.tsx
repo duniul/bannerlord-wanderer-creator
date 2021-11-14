@@ -38,14 +38,14 @@ const FaqPage = () => {
         FAQ
       </Header>
 
-      <Question title="Why can't I edit a wanderer's first name, attributes or perks?">
+      <Question title="Why can't I edit a wanderer's attributes, perks or cost?">
         <p>
-          Wanderers in Bannerlord are not <i>true</i> companions with a unique name (like the ones in Warband). Instead,
-          they are auto generated from a template and some values are randomized.
+          Wanderers in Bannerlord are not <i>true</i> companions like like in in Warband). Instead, they are auto
+          generated from a template and some values are randomized.
         </p>
         <p>
-          First names are generated based on the culture of the wanderer, while attributes and perk points are assigned
-          randomly based on the combined skill points of the template.
+          Attributes and perk points are assigned randomly based on the combined skill points of the template, while the
+          cost of hiring them is based on the gear they wear.
         </p>
       </Question>
 
@@ -96,6 +96,30 @@ const FaqPage = () => {
           This is done to ensure that the mod is placed below the official modules it depends on, which ensures that it
           loads later than them.
         </p>
+      </Question>
+
+      <Question title="My wanderers are not in the encyclopedia. Where are they?">
+        <ul>
+          <li>
+            If you have started a new campaign and are using a mod like Unlimited Wanderers, then the mod probably isn't
+            installed correctly.
+          </li>
+          <li>
+            If you have started a new campaign without an unlimited wanderers mod, then there is a risk that other
+            wanderers were loaded instead of yours.
+          </li>
+          <li>
+            If you haven't started a new campaign then you might need to wait longer in-game until a new set of
+            wanderers are loaded into the game.
+          </li>
+          <li>My wanderers show up in the encyclopedia, but not in the city it says they are in. Where are they?</li>
+        </ul>
+      </Question>
+
+      <Question title="My wanderers show up in the encyclopedia, but not in the city it says they are in. Where are they?">
+        The location mentioned in the encyclopedia isn't trustworthy, and almost always wrong. If they are in the
+        encyclopedia then they have been loaded into the game, which means that they will show up in a city at some
+        point.
       </Question>
     </Wrapper>
   );
