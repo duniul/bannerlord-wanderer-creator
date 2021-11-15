@@ -29,7 +29,7 @@ export function createSubModuleXml(name: string, id: string, version: string, ch
     <SubModule>
       <Name value="WandererStringsLoader"/>
       <DLLName value="WandererStringsLoader.dll"/>
-      <SubModuleClassType value="WandererStringsLoader.Main"/>
+      <SubModuleClassType value="WandererStringsLoader.SubModule"/>
       <Tags>
         <Tag key="DedicatedServerType" value="none" />
         <Tag key="IsNoRenderModeElement" value="false" />
