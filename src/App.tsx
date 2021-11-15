@@ -1,5 +1,4 @@
-import React from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { Icon, Menu } from 'semantic-ui-react';
 import styled, { createGlobalStyle } from 'styled-components';
 import FaqPage from './components/FaqPage';
@@ -54,7 +53,11 @@ const App = () => {
             <Menu size="massive" text>
               <MenuRouterItem name="Wanderers" to={PATHS.WANDERERS} />
               <MenuRouterItem name="FAQ" to={PATHS.FAQ} />
-              <Menu.Item href="https://www.nexusmods.com/mountandblade2bannerlord/mods/691" target="_blank" rel="noopener noreferrer">
+              <Menu.Item
+                href="https://www.nexusmods.com/mountandblade2bannerlord/mods/691"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 Example mod
               </Menu.Item>
               <Menu.Item href="https://github.com/duniul/butterlord-tools" target="_blank" rel="noopener noreferrer">
@@ -66,6 +69,7 @@ const App = () => {
           <Routes>
             <Route path={PATHS.WANDERERS + '/*'} element={<WandererPage />} />
             <Route path={PATHS.FAQ} element={<FaqPage />} />
+            <Route path="/" element={<Navigate replace to={PATHS.WANDERERS} />} />
           </Routes>
         </ModOptionsProvider>
       </BrowserRouter>
