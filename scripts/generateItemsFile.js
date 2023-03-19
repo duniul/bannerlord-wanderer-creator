@@ -14,7 +14,7 @@ const ABSOLUTE_ITEMS_FILE_PATH = path.resolve(__dirname, `../${ITEMS_FILE_PATH}`
 
 verifyTempSourceDirs();
 
-const itemsSourceDir = path.resolve(tempSourceDirs.sandBoxCoreData, 'spitems');
+const itemsSourceDir = path.resolve(tempSourceDirs.sandBoxCoreData, 'items');
 const itemsSourceFiles = fs
   .readdirSync(itemsSourceDir)
   .filter((fileName) => !fileName.includes('tournament')) // skip tournament weapons

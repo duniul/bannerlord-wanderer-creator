@@ -15,7 +15,7 @@ import {
   XmlNpcCharacter,
   XmlNpcCharactersFile
 } from '../../types/xml';
-import { parseXmlToJs } from './xmlParser';
+import { parseXml } from './xmlParser';
 
 function stripXmlScope(str: string | undefined): string | undefined {
   if (!str) {
@@ -31,16 +31,16 @@ function stripXmlScope(str: string | undefined): string | undefined {
   return str;
 }
 
-function asSingleTag<T = unknown>(tagOrTags: T): T extends any[] ? never : T {
+function asSingleTag<T>(tagOrTags: T | T[]): T {
   return Array.isArray(tagOrTags) ? tagOrTags[0] : tagOrTags;
 }
 
-function asTagArray<T = unknown>(tagOrTags: T): T extends any[] ? T : never {
+function asTagArray<T>(tagOrTags: T | T[] | undefined): T[] {
   if (!tagOrTags) {
-    return [] as any;
+    return [];
   }
 
-  return Array.isArray(tagOrTags) ? (tagOrTags as any) : [tagOrTags];
+  return Array.isArray(tagOrTags) ? tagOrTags : [tagOrTags];
 }
 
 function parseXmlFace(xmlFace: XmlFace | undefined): Face {
@@ -120,6 +120,6 @@ function parseXmlNpcCharacter(xmlNpcCharacter: XmlNpcCharacter): WandererWithout
 }
 
 export function parseCharactersXml(xml: string): WandererWithoutDialogue[] {
-  const jsXml = parseXmlToJs<XmlNpcCharactersFile>(xml);
+  const jsXml = parseXml<XmlNpcCharactersFile>(xml);
   return asTagArray(jsXml.NPCCharacters.NPCCharacter).map(parseXmlNpcCharacter);
 }

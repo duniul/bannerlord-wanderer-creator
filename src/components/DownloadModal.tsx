@@ -25,9 +25,7 @@ function formatModVersion(modVersion: string) {
 }
 
 async function createAndDownloadMod(name: string, version: string, wanderers: Wanderer[]) {
-  const wandererStringsLoaderDll = await fetch('/bin/WandererStringsLoader.dll').then((response) => response.blob());
-
-  return createMod(name, version, wanderers, wandererStringsLoaderDll).then((result) => {
+  return createMod({ name, version, wanderers }).then((result) => {
     const { id, zipBlob } = result;
     saveAs(zipBlob, `${id}_${version.replace('.', '_')}.zip`);
 

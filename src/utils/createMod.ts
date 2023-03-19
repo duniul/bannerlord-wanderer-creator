@@ -1,25 +1,26 @@
 import JSZip from 'jszip';
 import { Wanderer } from '../types/wanderers';
 import { createCharactersXml } from './xml/createCharactersXml';
+import { createCulturesXlst } from './xml/createCulturesXslt';
 import { createWandererStringsXml } from './xml/createWandererStringsXml';
 import { createSubModuleXml } from './xml/subModuleXml';
 
 function stripNonAlphanumeric(string: string): string {
-  return string.replace(/[^a-zA-Z\d]/g, '');
+  return string.replace(/[^a-zA-Z\d_]/g, '');
 }
 
 function updateWandererIds(modId: string, wanderers: Wanderer[]) {
   const ids = new Set();
-  const idPrefix = `spc_wanderer_${modId.toLowerCase()}`;
 
   return wanderers.map((wanderer) => {
     const namePart = wanderer.name.toLowerCase().replace(' ', '_');
-    const baseId = stripNonAlphanumeric(`${idPrefix}_${namePart}`);
+    const baseId = stripNonAlphanumeric(`${modId.toLowerCase()}_${namePart}`);
     let id = baseId;
-    let duplicateIncrement = 1;
+    let duplicateIncrement = 0;
 
     while (ids.has(id)) {
-      id = `${baseId}_${duplicateIncrement++}`;
+      duplicateIncrement++;
+      id = `${baseId}_${duplicateIncrement}`;
     }
 
     ids.add(id);
@@ -27,38 +28,41 @@ function updateWandererIds(modId: string, wanderers: Wanderer[]) {
   });
 }
 
-function createXmlAttrsToIdentifyText(modId: string, charactersFilePath: string, stringsFilePath: string) {
-  const lines = [];
-  lines.push(`${charactersFilePath}: NPCCharacters.NPCCharacter.name`);
-  lines.push(`${stringsFilePath}: base.strings.string.text`);
-  return lines.join('\n');
-}
+async function createMod(props: { name: string; version: string; wanderers: Wanderer[] }) {
+  const { name, version, wanderers } = props;
 
-async function createMod(name: string, version: string, wanderers: Wanderer[], wandererStringsDll: Blob) {
-  const id = stripNonAlphanumeric(`zz${name}`);
-  const lowerCaseModId = id.toLowerCase();
-  const wanderersWithFixedIds = updateWandererIds(id, wanderers);
+  const modId = stripNonAlphanumeric(`zz${name}`);
+  const lowerCaseModId = modId.toLowerCase();
+  const wanderersWithFixedIds = updateWandererIds(modId, wanderers);
+  const moduleDataPath = `${modId}/ModuleData`
 
-  const wandererStringsDllPath = `${id}/bin/Win64_Shipping_Client/WandererStringsLoader.dll`;
-  const charactersFilePath = `${id}/ModuleData/spspecialcharacters_${lowerCaseModId}.xml`;
-  const stringsFilePath = `${id}/ModuleData/wanderer_strings_${lowerCaseModId}.xml`;
-  const xmlAttrsToIdentifyPath = `${id}/ModuleData/xml_attributes_to_be_identified.txt`;
-  const subModulePath = `${id}/SubModule.xml`;
+  const culturesFileName = `spcultures_${lowerCaseModId}.xslt`;
+  const charactersFileName = `spspecialcharacters_${lowerCaseModId}.xml`;
+  const stringsFileName = `wanderer_strings_${lowerCaseModId}.xml`;
 
+  const culturesXslt = createCulturesXlst(wanderersWithFixedIds);
   const charactersXml = createCharactersXml(wanderersWithFixedIds);
   const wandererStringXml = createWandererStringsXml(wanderersWithFixedIds);
-  const xmlAttrsToIdentifyTxt = createXmlAttrsToIdentifyText(id, charactersFilePath, stringsFilePath);
-  const subModuleXml = createSubModuleXml(name, id, version, charactersFilePath);
+
+  const subModuleXml = createSubModuleXml({
+    name,
+    id: modId,
+    version,
+    modulePaths: {
+      cultures: culturesFileName,
+      characters: charactersFileName,
+      strings: stringsFileName,
+    },
+  });
 
   const zip = new JSZip();
-  zip.file(wandererStringsDllPath, wandererStringsDll);
-  zip.file(charactersFilePath, charactersXml);
-  zip.file(stringsFilePath, wandererStringXml);
-  zip.file(xmlAttrsToIdentifyPath, xmlAttrsToIdentifyTxt);
-  zip.file(subModulePath, subModuleXml);
+  zip.file(`${moduleDataPath}/${culturesFileName}`, culturesXslt);
+  zip.file(`${moduleDataPath}/${charactersFileName}`, charactersXml);
+  zip.file(`${moduleDataPath}/${stringsFileName}`, wandererStringXml);
+  zip.file(`${modId}/SubModule.xml`, subModuleXml);
 
   const zipBlob = await zip.generateAsync({ type: 'blob' });
-  return { id, name, version, zipBlob };
+  return { id: modId, name, version, zipBlob };
 }
 
 export default createMod;
