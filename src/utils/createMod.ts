@@ -34,7 +34,7 @@ async function createMod(props: { name: string; version: string; wanderers: Wand
   const modId = stripNonAlphanumeric(`zz${name}`);
   const lowerCaseModId = modId.toLowerCase();
   const wanderersWithFixedIds = updateWandererIds(modId, wanderers);
-  const moduleDataPath = `${modId}/ModuleData`
+  const moduleDataPath = `${modId}/ModuleData`;
 
   const culturesFileName = `spcultures_${lowerCaseModId}.xslt`;
   const charactersFileName = `spspecialcharacters_${lowerCaseModId}.xml`;

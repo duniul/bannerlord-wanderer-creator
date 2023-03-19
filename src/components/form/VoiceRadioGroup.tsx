@@ -3,14 +3,14 @@ import { Form, RadioProps } from 'semantic-ui-react';
 import { VoiceLabels } from '../../strings';
 import { Voice, voices } from '../../types/voices';
 
-interface VoiceRadioGroup {
+interface VoiceRadioGroupProps {
   value: Voice;
   onChange: (event: React.FormEvent<HTMLInputElement>, data: RadioProps) => void;
 }
 
 const NAME = 'voice';
 
-const VoiceRadioGroup = React.memo(({ value, onChange }: VoiceRadioGroup) => {
+const VoiceRadioGroup = React.memo(({ value, onChange }: VoiceRadioGroupProps) => {
   const defaultProps = { name: NAME, onChange };
 
   return (

@@ -1,12 +1,12 @@
+import { captureException } from '@sentry/browser';
 import { saveAs } from 'file-saver';
 import set from 'lodash.set';
-import React, { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Form, Header, Message, Modal, ModalProps } from 'semantic-ui-react';
 import { useModOptions } from '../contexts/ModOptionsContext';
 import { Wanderer } from '../types/wanderers';
 import createMod from '../utils/createMod';
-import { captureException } from '@sentry/browser';
 
 interface DownloadModalProps extends Pick<ModalProps, Exclude<keyof ModalProps, 'onClose'>> {
   onClose: any;
@@ -33,7 +33,7 @@ async function createAndDownloadMod(name: string, version: string, wanderers: Wa
   });
 }
 
-const DownloadModal = ({ onChangeModName, onChangeModVersion, onClose, ...modalProps }: DownloadModalProps) => {
+const DownloadModal = ({ onClose, ...modalProps }: DownloadModalProps) => {
   const { wanderers, modName, modVersion, setModName, setModVersion } = useModOptions();
   const [loading, setLoading] = useState<boolean>();
   const [modErrorId, setModErrorId] = useState<string>();
@@ -41,7 +41,7 @@ const DownloadModal = ({ onChangeModName, onChangeModVersion, onClose, ...modalP
   const hasErrors = useMemo(() => !!modErrorId || Object.values(formErrors).some((e) => !!e), [modErrorId, formErrors]);
 
   const handleModNameChange = useCallback(
-    (event, data) => {
+    (_event, data) => {
       const { value } = data;
       setModName(formatModName(value));
       setFormErrors((prev) => set({ ...prev }, 'modName', undefined));
@@ -50,7 +50,7 @@ const DownloadModal = ({ onChangeModName, onChangeModVersion, onClose, ...modalP
   );
 
   const handleModVersionChange = useCallback(
-    (event, data) => {
+    (_event, data) => {
       const { value } = data;
       setModVersion(formatModVersion(value));
       setFormErrors((prev) => set({ ...prev }, 'modVersion', undefined));

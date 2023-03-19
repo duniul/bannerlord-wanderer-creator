@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react';
 import { Comment, Input, InputProps } from 'semantic-ui-react';
 import styled from 'styled-components';
-import { Dialogue } from '../types/wanderers';
 import { Culture } from '../types/culture';
+import { Dialogue } from '../types/wanderers';
 import WandererAvatar from './WandererAvatar';
 
 interface WandererDialogueProps {
@@ -55,10 +55,10 @@ const DialogueComment = React.memo(
 const playerAvatar = <WandererAvatar as={Comment.Avatar} />;
 
 const WandererDialogue = ({ dialogue, name, culture, isFemale, onChange }: WandererDialogueProps) => {
-  const wandererAvatar = useMemo(() => <WandererAvatar as={Comment.Avatar} culture={culture} isFemale={isFemale} />, [
-    culture,
-    isFemale,
-  ]);
+  const wandererAvatar = useMemo(
+    () => <WandererAvatar as={Comment.Avatar} culture={culture} isFemale={isFemale} />,
+    [culture, isFemale]
+  );
 
   const wandererCommentProps = { name: name || 'Wanderer', avatar: wandererAvatar, onChange };
   const playerCommentProps = { name: 'Player', avatar: playerAvatar, indent: true, onChange };

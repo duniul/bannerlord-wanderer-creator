@@ -35,7 +35,7 @@ const sortOptions = [
 const useSortWanderers = (unsortedWanderers: Wanderer[]): UseSortWanderersReturnValue => {
   const [sortValue, setSortValue] = useState<SortValues>(SortValues.Created);
 
-  const onSortChange = useCallback((event, data) => {
+  const onSortChange = useCallback((_event, data) => {
     setSortValue(data.value);
   }, []);
 

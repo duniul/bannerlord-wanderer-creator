@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 import { TRAIT_LEVEL_LABELS } from '../strings';
 import { Trait, TraitLevel } from '../types/traits';
@@ -32,7 +31,7 @@ const TraitTag = ({ trait, value }: TraitTagProps): JSX.Element | null => {
   const numberValue = Number(value);
   const label = value && TRAIT_LEVEL_LABELS[trait]?.[value];
 
-  if (!label || !value || numberValue === 0) {
+  if (!(label && value) || numberValue === 0) {
     return null;
   }
 

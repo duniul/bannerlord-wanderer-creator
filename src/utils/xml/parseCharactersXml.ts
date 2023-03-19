@@ -81,9 +81,10 @@ function parseXmlEquipmentRoster(xmlEquipmentRoster: XmlEquipmentRoster | undefi
   return equipment;
 }
 
-function parseXmlEquipments(
-  xmlEquipments: XmlEquipments | undefined
-): { battleEquipment: EquipmentRoster; civilianEquipment: EquipmentRoster } {
+function parseXmlEquipments(xmlEquipments: XmlEquipments | undefined): {
+  battleEquipment: EquipmentRoster;
+  civilianEquipment: EquipmentRoster;
+} {
   if (!xmlEquipments) {
     return { battleEquipment: {}, civilianEquipment: {} };
   }

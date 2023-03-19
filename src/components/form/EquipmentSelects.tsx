@@ -9,7 +9,7 @@ import {
   LEG_ARMORS,
   MOUNTS,
   MOUNT_HARNESSES,
-  WEAPONS,
+  WEAPONS
 } from '../../constants/items';
 import { EquipmentRoster, EquipmentSlot } from '../../types/equipment';
 

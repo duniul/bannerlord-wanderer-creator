@@ -75,78 +75,76 @@ function renderTraits(traits?: Traits): JSX.Element[] {
     .filter(Boolean);
 }
 
-const WandererCard = React.memo<WandererCardProps>(
-  ({ wanderer, onUpdate, onDelete }): JSX.Element => {
-    const { id, name, age, isFemale, culture, skills, traits, dialogue } = wanderer;
-    const [active, setActive] = useState<boolean>(false);
-    const [visiblePopup, setVisiblePopup] = useState<boolean>(false);
-    const [visibleModal, setVisibleModal] = useState<boolean>(false);
+const WandererCard = React.memo<WandererCardProps>(({ wanderer, onUpdate, onDelete }): JSX.Element => {
+  const { id, name, age, isFemale, culture, skills, traits, dialogue } = wanderer;
+  const [active, setActive] = useState<boolean>(false);
+  const [visiblePopup, setVisiblePopup] = useState<boolean>(false);
+  const [visibleModal, setVisibleModal] = useState<boolean>(false);
 
-    const [activate, deactivate] = useBooleanSetters(setActive);
-    const [openPopup, closePopup] = useBooleanSetters(setVisiblePopup);
-    const [openModal, closeModal] = useBooleanSetters(setVisibleModal);
+  const [activate, deactivate] = useBooleanSetters(setActive);
+  const [openPopup, closePopup] = useBooleanSetters(setVisiblePopup);
+  const [openModal, closeModal] = useBooleanSetters(setVisibleModal);
 
-    const traitLabels = useMemo(() => renderTraits(traits), [traits]);
+  const traitLabels = useMemo(() => renderTraits(traits), [traits]);
 
-    const backstoryQuote = dialogue?.backstory_a || '';
+  const backstoryQuote = dialogue?.backstory_a || '';
 
-    const handleDelete = useCallback(() => {
-      onDelete(id);
-    }, [id, onDelete]);
+  const handleDelete = useCallback(() => {
+    onDelete(id);
+  }, [id, onDelete]);
 
-    return (
-      <WrapperSegment raised={active} onMouseMove={activate} onMouseLeave={deactivate}>
-        <Item.Group unstackable>
-          <Item>
-            <WandererAvatar as={Item.Image} size="tiny" culture={culture} isFemale={isFemale} />
+  return (
+    <WrapperSegment raised={active} onMouseMove={activate} onMouseLeave={deactivate}>
+      <Item.Group unstackable>
+        <Item>
+          <WandererAvatar as={Item.Image} size="tiny" culture={culture} isFemale={isFemale} />
 
-            <Item.Content>
-              <Item.Header>{name}</Item.Header>
-              <Item.Meta>
-                {isFemale ? 'Female' : 'Male'}, {age} ∙ {CultureLabels[culture]} ∙ {sumSkillPoints(skills)} skill points
-              </Item.Meta>
-              <TraitsArea>{traitLabels}</TraitsArea>
-              <Item.Description>
-                <i>
-                  "{backstoryQuote.slice(0, MAX_QUOTE_LENGTH)}
-                  {!backstoryQuote || backstoryQuote.length > MAX_QUOTE_LENGTH ? '...' : ''}"
-                </i>
-              </Item.Description>
-              {(active || visiblePopup) && (
-                <ActionsArea>
-                  <Button
-                    {...actionButtonDefaults}
-                    primary
-                    icon="pencil"
-                    onClick={openModal}
-                    onFocus={activate}
-                    onBlur={deactivate}
-                  />
-                  <Popup
-                    content={
-                      <span>
-                        Are you sure? <LinkButton onClick={handleDelete}>Delete</LinkButton>
-                      </span>
-                    }
-                    on="click"
-                    pinned
-                    position="bottom center"
-                    onOpen={openPopup}
-                    onClose={closePopup}
-                    trigger={<Button {...actionButtonDefaults} negative icon="trash" />}
-                  />
-                </ActionsArea>
-              )}
-            </Item.Content>
-          </Item>
-        </Item.Group>
-        <CultureBackgroundImage culture={culture} />
-        {visibleModal && (
-          <WandererModal wanderer={wanderer} open={visibleModal} onUpdate={onUpdate} onClose={closeModal} />
-        )}
-      </WrapperSegment>
-    );
-  }
-);
+          <Item.Content>
+            <Item.Header>{name}</Item.Header>
+            <Item.Meta>
+              {isFemale ? 'Female' : 'Male'}, {age} ∙ {CultureLabels[culture]} ∙ {sumSkillPoints(skills)} skill points
+            </Item.Meta>
+            <TraitsArea>{traitLabels}</TraitsArea>
+            <Item.Description>
+              <i>
+                "{backstoryQuote.slice(0, MAX_QUOTE_LENGTH)}
+                {!backstoryQuote || backstoryQuote.length > MAX_QUOTE_LENGTH ? '...' : ''}"
+              </i>
+            </Item.Description>
+            {(active || visiblePopup) && (
+              <ActionsArea>
+                <Button
+                  {...actionButtonDefaults}
+                  primary
+                  icon="pencil"
+                  onClick={openModal}
+                  onFocus={activate}
+                  onBlur={deactivate}
+                />
+                <Popup
+                  content={
+                    <span>
+                      Are you sure? <LinkButton onClick={handleDelete}>Delete</LinkButton>
+                    </span>
+                  }
+                  on="click"
+                  pinned
+                  position="bottom center"
+                  onOpen={openPopup}
+                  onClose={closePopup}
+                  trigger={<Button {...actionButtonDefaults} negative icon="trash" />}
+                />
+              </ActionsArea>
+            )}
+          </Item.Content>
+        </Item>
+      </Item.Group>
+      <CultureBackgroundImage culture={culture} />
+      {visibleModal && (
+        <WandererModal wanderer={wanderer} open={visibleModal} onUpdate={onUpdate} onClose={closeModal} />
+      )}
+    </WrapperSegment>
+  );
+});
 
 export default WandererCard;
