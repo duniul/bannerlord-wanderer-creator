@@ -2,15 +2,12 @@
   "name": "butterlord-tools",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
     "preinstall": "npx only-allow pnpm"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
   },
   "packageManager": "pnpm@7.29.1",
   "engines": {
@@ -45,12 +42,9 @@
     "semantic-ui-css": "2.4.1",
     "semantic-ui-react": "2.0.4",
     "styled-components": "5.3.3",
-    "typescript": "4.4.4",
     "uuid": "8.3.2"
   },
   "devDependencies": {
-    "@babel/plugin-proposal-nullish-coalescing-operator": "7.16.0",
-    "@babel/plugin-proposal-optional-chaining": "7.16.0",
     "@testing-library/jest-dom": "5.15.0",
     "@testing-library/react": "12.1.2",
     "@testing-library/user-event": "13.5.0",
@@ -66,11 +60,13 @@
     "@types/react-router-dom": "5.3.2",
     "@types/styled-components": "5.1.15",
     "@types/uuid": "8.3.1",
+    "@vitejs/plugin-react-swc": "^3.0.0",
     "clipboardy": "3.0.0",
     "eslint-plugin-prettier": "4.0.0",
     "fs-extra": "10.0.0",
     "globby": "11.0.3",
     "prettier": "2.4.1",
-    "react-scripts": "4.0.3"
+    "typescript": "^4.9.3",
+    "vite": "^4.2.0"
   }
 }

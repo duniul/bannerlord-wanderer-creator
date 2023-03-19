@@ -1,5 +1,4 @@
 {
-  "extends": ["react-app"],
   "plugins": ["prettier"],
   "rules": {
     "arrow-parens": [2, "always"],
