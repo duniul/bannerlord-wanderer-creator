@@ -13,11 +13,11 @@ Uses my simple `WandererStringsLoader.dll` module to load custom wanderer dialog
 Checkout the project and install the dependencies with:
 
 ```
-  yarn
+  pnpm install
 ```
 
 Then run the project with:
 
 ```
-  yarn start
+  pnpm start
 ```
