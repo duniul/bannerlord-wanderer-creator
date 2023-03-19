@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Button, Dropdown, Header, Icon, Popup } from 'semantic-ui-react';
 import styled from 'styled-components';
 import { useModOptions } from '../contexts/ModOptionsContext';
@@ -146,9 +146,7 @@ const WandererPage = () => {
             content={
               <span>
                 Are you sure? All wanderers will be removed.{' '}
-                <LinkButton onClick={() => setWanderers([])}>
-                  Confirm
-                </LinkButton>
+                <LinkButton onClick={() => setWanderers([])}>Confirm</LinkButton>
               </span>
             }
           />

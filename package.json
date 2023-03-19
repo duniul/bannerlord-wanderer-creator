@@ -9,6 +9,7 @@
     "preview": "vite preview",
     "preinstall": "npx only-allow pnpm",
     "lint": "rome check src",
+    "lint:fix": "rome check src --apply-suggested",
     "format": "rome format src --write"
   },
   "packageManager": "pnpm@7.29.1",

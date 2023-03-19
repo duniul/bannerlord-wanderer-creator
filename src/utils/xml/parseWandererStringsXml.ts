@@ -17,7 +17,7 @@ function parseDialoguePath(stringId: string): string | null {
   const dialogueStep = stringId.slice(0, firstDotIndex);
   const wandererId = stringId.slice(firstDotIndex + 1);
 
-  if (!dialogueStep || !wandererId) {
+  if (!(dialogueStep && wandererId)) {
     return null;
   }
 

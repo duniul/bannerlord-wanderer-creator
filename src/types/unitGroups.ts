@@ -1,4 +1,3 @@
-
 export enum UnitGroup {
   Infantry = 'Infantry',
   Ranged = 'Ranged',

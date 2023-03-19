@@ -1,14 +1,17 @@
-import set from 'lodash.set';
 import isEqual from 'lodash.isequal';
-import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { Button, Form, Header, Modal, ModalProps, FormGroup, Confirm } from 'semantic-ui-react';
+import set from 'lodash.set';
+import { useCallback, useMemo, useRef, useState } from 'react';
+import { Button, Confirm, Form, FormGroup, Header, Modal, ModalProps } from 'semantic-ui-react';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
+import useBooleanSetters from '../hooks/useBooleanSetters';
 import { cultures } from '../types/culture';
+import { UnitGroup } from '../types/unitGroups';
 import { voices } from '../types/voices';
 import { Wanderer } from '../types/wanderers';
 import { bodyPropertiesJsToXml, bodyPropertiesXmlToJs } from '../utils/bodyProperties';
 import CultureSelect from './form/CultureSelect';
+import EquipmentSelects from './form/EquipmentSelects';
 import { BeardSelect, FaceTemplateSelect, HairSelect } from './form/faceSelects';
 import FormGrid from './form/FormGrid';
 import NameInput from './form/NameInput';
@@ -18,9 +21,6 @@ import TraitSelects from './form/TraitSelects';
 import UnitGroupSelect from './form/UnitGroupSelect';
 import VoiceRadioGroup from './form/VoiceRadioGroup';
 import WandererDialogue from './WandererDialogue';
-import { UnitGroup } from '../types/unitGroups';
-import useBooleanSetters from '../hooks/useBooleanSetters';
-import EquipmentSelects from './form/EquipmentSelects';
 
 interface WandererModalProps extends Pick<ModalProps, Exclude<keyof ModalProps, 'onClose'>> {
   wanderer?: Wanderer;
@@ -71,7 +71,7 @@ function wandererToFormValues(wanderer?: Wanderer): FormValues {
     dialogue: { ...(wanderer?.dialogue || {}) },
   };
 
-  if (!!wanderer?.face.bodyProperties) {
+  if (wanderer?.face.bodyProperties) {
     formValues.useCustomFace = true;
     formValues.bodyPropertiesString = bodyPropertiesJsToXml(wanderer.face.bodyProperties);
   }
@@ -117,7 +117,7 @@ const WandererModal = ({ wanderer, onUpdate, onClose, ...modalProps }: WandererM
       } else {
         try {
           bodyProperties = bodyPropertiesXmlToJs(values.bodyPropertiesString);
-        } catch (e) {
+        } catch (_e) {
           set(
             newErrors,
             'bodyPropertiesString',
@@ -154,13 +154,13 @@ const WandererModal = ({ wanderer, onUpdate, onClose, ...modalProps }: WandererM
     }
   }, [onUpdate, onClose]);
 
-  const handleValueChange = useCallback((event, data) => {
+  const handleValueChange = useCallback((_event, data) => {
     const { name, value } = data;
     setFormValues((prev) => set({ ...prev }, name, value));
     setErrors((prev) => set({ ...prev }, name, undefined));
   }, []);
 
-  const handleCheckedChange = useCallback((event, data) => {
+  const handleCheckedChange = useCallback((_event, data) => {
     const { name } = data;
     setFormValues((prev) => ({ ...prev, [name]: !prev[name as keyof FormValues] }));
   }, []);
@@ -171,7 +171,7 @@ const WandererModal = ({ wanderer, onUpdate, onClose, ...modalProps }: WandererM
       <Modal.Content style={{ padding: 32 }}>
         <StyledForm id={FORM_ID} size="large">
           <Header dividing>Character info</Header>
-            <NameInput value={formValues.name} error={errors?.name} onChange={handleValueChange} />
+          <NameInput value={formValues.name} error={errors?.name} onChange={handleValueChange} />
 
           <FormGroup widths="equal">
             <Form.Input

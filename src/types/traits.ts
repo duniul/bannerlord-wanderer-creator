@@ -1,5 +1,3 @@
-
-
 export const TRAIT_LEVELS = [-2, -1, 1, 2] as const;
 
 export type TraitLevel = typeof TRAIT_LEVELS[number];

@@ -1,23 +1,15 @@
 {
-  // Rome files
-  "[javascript]": { "editor.defaultFormatter": "rome.rome" },
-  "[javascriptreact]": { "editor.defaultFormatter": "rome.rome" },
-  "[typescript]": { "editor.defaultFormatter": "rome.rome" },
-  "[typescriptreact]": { "editor.defaultFormatter": "rome.rome" },
-
   // Prettier files
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
   "[markdown]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.wordWrap": "off",
     "files.trimTrailingWhitespace": false
   },
-  "[json]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
-  "[jsonc]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
-  "[html]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
-  "[handlebars]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
-  "[dockerfile]": { "editor.defaultFormatter": "ms-azuretools.vscode-docker" },
-  "[shellscript]": { "editor.defaultFormatter": "foxundermoon.shell-format" },
-  "[properties]": { "editor.defaultFormatter": "foxundermoon.shell-format" },
-  "[astro]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
-  "[css]": { "editor.defaultFormatter": "esbenp.prettier-vscode" }
+
+  // Rome files
+  "[javascript]": { "editor.defaultFormatter": "rome.rome" },
+  "[javascriptreact]": { "editor.defaultFormatter": "rome.rome" },
+  "[typescript]": { "editor.defaultFormatter": "rome.rome" },
+  "[typescriptreact]": { "editor.defaultFormatter": "rome.rome" }
 }

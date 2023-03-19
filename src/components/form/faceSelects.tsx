@@ -1,4 +1,3 @@
-import React from 'react';
 import { Form, FormSelectProps } from 'semantic-ui-react';
 import { BeardLabels, HairLabels } from '../../strings';
 import { Beard, HairFemale, HairMale } from '../../types/face';

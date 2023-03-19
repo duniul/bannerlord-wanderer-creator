@@ -1,11 +1,11 @@
-import React, { useCallback, useState } from 'react';
+import { captureException } from '@sentry/browser';
+import { useCallback, useState } from 'react';
 import { Button, Header, Message, Modal, ModalProps } from 'semantic-ui-react';
 import styled from 'styled-components';
 import { useModOptions } from '../contexts/ModOptionsContext';
 import { WandererModule } from '../types/wanderers';
 import loadMod from '../utils/loadMod';
 import FileInput from './form/FileInput';
-import { captureException } from '@sentry/browser';
 
 interface UploadModalProps extends Pick<ModalProps, Exclude<keyof ModalProps, 'onClose'>> {
   onClose: any;

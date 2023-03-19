@@ -7,7 +7,7 @@ export function bodyPropertiesJsToXml(bodyProperties: BodyProperties): string {
 
   try {
     return buildXml(jsXmlBodyProperties);
-  } catch (error) {
+  } catch (_error) {
     return 'waaa';
   }
 }
@@ -15,7 +15,7 @@ export function bodyPropertiesJsToXml(bodyProperties: BodyProperties): string {
 export function bodyPropertiesXmlToJs(xmlString: string): BodyProperties {
   const { BodyProperties } = parseXml<XmlFaceWithBodyProperties>(xmlString);
 
-  if (!BodyProperties || !BodyProperties._attrs.version || !BodyProperties._attrs.key) {
+  if (!(BodyProperties?._attrs.version && BodyProperties._attrs.key)) {
     throw Error('Invalid BodyProperties');
   }
 
