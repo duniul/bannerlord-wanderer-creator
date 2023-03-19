@@ -1,41 +1,38 @@
-import { J2xOptions, j2xParser, parse, X2jOptions } from 'fast-xml-parser';
+import { XMLBuilder, XMLParser } from 'fast-xml-parser';
 
 const SHARED_PARSER_OPTIONS = {
-  attrNodeName: '_attrs',
+  commentPropName: '_comment',
+  attributesGroupName: '_attrs',
   attributeNamePrefix: '',
+  hmm: 'test',
 };
 
-const XML_TO_JS_OPTIONS: Partial<X2jOptions> = {
+const xmlParser = new XMLParser({
   ...SHARED_PARSER_OPTIONS,
   ignoreAttributes: false,
-  ignoreNameSpace: true,
   allowBooleanAttributes: false,
   parseAttributeValue: true,
-  parseNodeValue: true,
-  parseTrueNumberOnly: false,
   trimValues: true,
-  arrayMode: false,
-  stopNodes: ['parse-me-as-string'],
   alwaysCreateTextNode: false,
-};
+});
 
-const JS_TO_XML_OPTIONS: Partial<J2xOptions> = {
+const xmlBuilder = new XMLBuilder({
   ...SHARED_PARSER_OPTIONS,
   ignoreAttributes: false,
+  processEntities: false,
   format: true,
-  supressEmptyNode: true,
   indentBy: '  ',
-};
+  suppressEmptyNode: true,
+  suppressBooleanAttributes: false,
+});
 
-const jsToXmlParser = new j2xParser(JS_TO_XML_OPTIONS);
-
-export function parseXmlToJs<TResult extends Object = any>(xml: string): TResult {
-  return parse(xml, XML_TO_JS_OPTIONS);
+export function parseXml<TResult extends Object = any>(xml: string): TResult {
+  return xmlParser.parse(xml);
 }
 
-export function parseJsToXml(jsXmlObject: Object, options: { declaration?: boolean } = {}): string {
+export function buildXml(jsXmlObject: Object, options: { declaration?: boolean } = {}): string {
   const { declaration } = options;
-  let xml = jsToXmlParser.parse(jsXmlObject);
+  let xml = xmlBuilder.build(jsXmlObject);
 
   if (declaration) {
     xml = `<?xml version="1.0" encoding="utf-8"?>\n` + xml;

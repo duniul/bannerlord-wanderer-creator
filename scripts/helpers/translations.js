@@ -1,8 +1,8 @@
-const translationIdRegex = /\s*{[^}]*}\s*/;
+const translationIdRegex = /\s*{[^}]*}\s*/g; // Example: "{=whvMZZba}Guarded Padded Vambraces" -> "{=whvMZZba}"
+const pluralRegex = /\{@Plural\}[^{]+\{\\@\}/g; // Example: "Cossian{@Plural}Cossian horses{@/}" -> "{@Plural}Cossian horses{@/}"
 
-// Example name with translation ID: "{=whvMZZba}Guarded Padded Vambraces"
 function stripTranslationId(name) {
-  return name.replace(translationIdRegex, '');
+  return name.replace(translationIdRegex, '').replace(pluralRegex, '');
 }
 
 module.exports = {

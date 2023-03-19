@@ -1,19 +1,19 @@
 import { BodyProperties } from '../types/face';
 import { XmlFaceWithBodyProperties } from '../types/xml';
-import { parseJsToXml, parseXmlToJs } from './xml/xmlParser';
+import { buildXml, parseXml } from './xml/xmlParser';
 
 export function bodyPropertiesJsToXml(bodyProperties: BodyProperties): string {
   const jsXmlBodyProperties: XmlFaceWithBodyProperties = { BodyProperties: { _attrs: bodyProperties } };
 
   try {
-    return parseJsToXml(jsXmlBodyProperties);
+    return buildXml(jsXmlBodyProperties);
   } catch (error) {
     return 'waaa';
   }
 }
 
 export function bodyPropertiesXmlToJs(xmlString: string): BodyProperties {
-  const { BodyProperties } = parseXmlToJs<XmlFaceWithBodyProperties>(xmlString);
+  const { BodyProperties } = parseXml<XmlFaceWithBodyProperties>(xmlString);
 
   if (!BodyProperties || !BodyProperties._attrs.version || !BodyProperties._attrs.key) {
     throw Error('Invalid BodyProperties');

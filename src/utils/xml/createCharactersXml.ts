@@ -10,7 +10,7 @@ import {
   XmlNpcCharacter,
   XmlNpcCharactersFile,
 } from '../../types/xml';
-import { parseJsToXml } from './xmlParser';
+import { buildXml } from './xmlParser';
 
 function createJsXmlFace(face: Face): XmlFace {
   if (face.bodyProperties) {
@@ -134,5 +134,5 @@ export function createCharactersXml(wanderers: WandererWithoutDialogue[]): strin
     },
   };
 
-  return parseJsToXml(jsXml, { declaration: true });
+  return buildXml(jsXml, { declaration: true });
 }

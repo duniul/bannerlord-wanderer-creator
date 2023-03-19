@@ -1,7 +1,7 @@
 import set from 'lodash.set';
 import { Dialogue } from '../../types/wanderers';
 import { XmlWandererStringsFile } from '../../types/xml';
-import { parseXmlToJs } from './xmlParser';
+import { parseXml } from './xmlParser';
 
 export interface WandererDialogues {
   [WandererID: string]: Dialogue;
@@ -25,8 +25,8 @@ function parseDialoguePath(stringId: string): string | null {
 }
 
 export function parseWandererStringsXml(xml: string): WandererDialogues {
-  const jsXml = parseXmlToJs<XmlWandererStringsFile>(xml);
-  const jsXmlDialogueStrings = jsXml.base.strings.string;
+  const jsXml = parseXml<XmlWandererStringsFile>(xml);
+  const jsXmlDialogueStrings = jsXml.strings.string;
 
   const wandererDialogues: WandererDialogues = {};
 

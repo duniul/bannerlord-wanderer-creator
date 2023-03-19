@@ -11,7 +11,7 @@ import { BodyProperties } from './face';
 export interface XmlNpcCharactersFile {
   NPCCharacters: {
     NPCCharacter: XmlNpcCharacter | XmlNpcCharacter[];
-  } 
+  };
 }
 
 export interface XmlNpcCharacter {
@@ -26,7 +26,7 @@ export interface XmlNpcCharacter {
     is_template: true;
     is_hero: false;
     occupation: 'Wanderer';
-  },
+  };
   face: XmlFace;
   skills?: XmlSkills;
   Traits?: XmlTraits;
@@ -67,7 +67,7 @@ export interface XmlHairTags {
 export interface XmlHairTag {
   _attrs: {
     name: string;
-  }
+  };
 }
 
 export interface XmlBeardTags {
@@ -77,7 +77,7 @@ export interface XmlBeardTags {
 export interface XmlBeardTag {
   _attrs: {
     name: string;
-  }
+  };
 }
 
 export interface XmlBodyProperties {
@@ -118,7 +118,7 @@ export interface XmlEquipments {
 export interface XmlEquipmentRoster {
   _attrs: {
     civilian?: true;
-  },
+  };
   equipment: XmlEquipmentItem | XmlEquipmentItem[];
 }
 
@@ -126,7 +126,7 @@ export interface XmlEquipmentItem {
   _attrs: {
     id: string;
     slot: EquipmentSlot;
-  }
+  };
 }
 
 //
@@ -134,21 +134,14 @@ export interface XmlEquipmentItem {
 //
 
 export interface XmlWandererStringsFile {
-  base: {
-    _attrs: {
-      "xmlns:xsi": string;
-      "xmlns:xsd": string;
-      type: string;
-    },
-    strings: {
-      string: XmlWandererString[];
-    }
-  }
+  strings: {
+    string: XmlWandererString[];
+  };
 }
 
 export interface XmlWandererString {
   _attrs: {
     id: string;
     text: string;
-  }
+  };
 }
