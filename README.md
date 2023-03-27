@@ -1,6 +1,6 @@
 # Bannerlord Wanderer Creator 
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/88047455-ed6f-4be8-bd3c-fd74b43574eb/deploy-status)](https://app.netlify.com/sites/butterlord-wanderers/deploys)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/88047455-ed6f-4be8-bd3c-fd74b43574eb/deploy-status)](https://app.netlify.com/sites/bannerlord-companion-creator/deploys)
 
 **Webpage:** https://butterlord.com/wanderers 
 
