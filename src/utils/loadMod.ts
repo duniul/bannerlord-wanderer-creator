@@ -11,6 +11,10 @@ function isFile(jsZipObject: JSZip.JSZipObject) {
   return jsZipObject.dir === false;
 }
 
+function isNotMACOSX(file: JSZip.JSZipObject) {
+  return !file.name.startsWith('__MACOSX/');
+}
+
 async function unzipModXmls(zippedModFile: File) {
   const zip = new JSZip();
   const unzipped = await zip.loadAsync(zippedModFile);
@@ -25,6 +29,7 @@ async function unzipModXmls(zippedModFile: File) {
 
   Object.values(unzipped.files)
     .filter(isFile)
+    .filter(isNotMACOSX)
     .forEach(({ name }) => {
       if (CHARACTERS_REGEX.test(name)) {
         characterPaths.push(name);
